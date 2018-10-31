@@ -16,6 +16,13 @@ namespace DrawLine2005
             InitializeComponent();
         }
 
+        /** 五段式 SVPWM 占空比计算 MATLAB 源代码(一相恒低)   //const high = mr*(1-uvw).
+        % File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
+        % Author: Jerry.Hua
+        % Description:
+        % 1. calculation of 5 segments SVPWM , one phase is low(connected to
+        % GND) during one PWM period
+        * */
         private void button2_Click(object sender, EventArgs e)
         {
             int X_LEN = 720; //can be get from user setting.
@@ -23,21 +30,16 @@ namespace DrawLine2005
             Bitmap bmp = new Bitmap(X_LEN, Y_LEN);
             Graphics grp = Graphics.FromImage(bmp);
             ///Graphics grp = pictureBox1.CreateGraphics(); //can not display correct, and disappear.
-            /** 五段式 SVPWM 占空比计算 MATLAB 源代码(一相恒低)   //const high = mr*(1-uvw).
-            % File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
-            % Author: Jerry.Hua
-            % Description:
-            % 1. calculation of 5 segments SVPWM , one phase is low(connected to
-            % GND) during one PWM period
-            * */
 
-            int mr = Y_LEN; //modulation radio.
-            int sr = Y_LEN; //scale radio.
             float[] DC_U = new float[360];
             float[] DC_V = new float[360];
             float[] DC_W = new float[360];
+
+            double mr = (double)Y_LEN;              //modulation radio.
+            double sr = (double)(X_LEN / 360);      //scale radio.
+
             double pi = Math.PI;
-            double a = 0; //alpha, or theta
+            double a = 0;                           //alpha, or theta
 
             for (int i = 0; i < 360; i++)
             {
@@ -86,11 +88,16 @@ namespace DrawLine2005
                 }
             }//for calculate.
             //draw lines.
-            for (int j = 0; j < 360-1; j++)
+            for (int j = 0; j < X_LEN; j++)
             {
-                grp.DrawLine(new Pen(Color.Red, 2),   new Point(j, Y_LEN - (int)DC_U[j]), new Point(j + 1, Y_LEN - (int)DC_U[j + 1]));
-                grp.DrawLine(new Pen(Color.Blue, 2),  new Point(j, Y_LEN - (int)DC_V[j]), new Point(j + 1, Y_LEN - (int)DC_V[j + 1]));
-                grp.DrawLine(new Pen(Color.Green, 2), new Point(j, Y_LEN - (int)DC_W[j]), new Point(j + 1, Y_LEN - (int)DC_W[j + 1]));
+                int k = (int)((double)j / sr);
+                if (k > 360-2)
+                {
+                    k = 360-2;
+                }
+                grp.DrawLine(new Pen(Color.Red, 2), new Point(k, Y_LEN - (int)DC_U[k]), new Point(k + 1, Y_LEN - (int)DC_U[k + 1]));
+                grp.DrawLine(new Pen(Color.Blue, 2), new Point(k, Y_LEN - (int)DC_V[k]), new Point(k + 1, Y_LEN - (int)DC_V[k + 1]));
+                grp.DrawLine(new Pen(Color.Green, 2), new Point(k, Y_LEN - (int)DC_W[k]), new Point(k + 1, Y_LEN - (int)DC_W[k + 1]));
             }
 
             //grp.DrawLine(new Pen(Color.Red, 10), new Point(0, 0), new Point(100, 100));
