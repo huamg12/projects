@@ -51,7 +51,7 @@ namespace DrawLine2005
             this.pictureBox1.Location = new System.Drawing.Point(16, 69);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(464, 328);
+            this.pictureBox1.Size = new System.Drawing.Size(720, 400);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -75,7 +75,7 @@ namespace DrawLine2005
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(505, 411);
+            this.ClientSize = new System.Drawing.Size(753, 493);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
@@ -93,6 +93,10 @@ namespace DrawLine2005
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+
+        //DATA.
+        //private int X_LEN = 720;
+        //private int Y_LEN = 400;
     }
 }
 
