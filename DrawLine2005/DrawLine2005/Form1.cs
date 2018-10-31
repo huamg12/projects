@@ -27,9 +27,23 @@ namespace DrawLine2005
         {
             int X_LEN = 720; //can be get from user setting.
             int Y_LEN = 400; //can be get from user setting.
+            int x1 = 0, x2 = 0;
+            int y1 = 0, y2 = 0;
             Bitmap bmp = new Bitmap(X_LEN, Y_LEN);
             Graphics grp = Graphics.FromImage(bmp);
             ///Graphics grp = pictureBox1.CreateGraphics(); //can not display correct, and disappear.
+            x1 = 0; y1 = Y_LEN - 0;         //see the right data (0, 0).
+            x2 = 0; y2 = Y_LEN - Y_LEN;     //see the right data (0, Y).
+            grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //left
+            x1 = X_LEN; y1 = Y_LEN - 0;     //see the right data (X, 0).
+            x2 = X_LEN; y2 = Y_LEN - Y_LEN; //see the right data (X, Y).
+            grp.DrawLine(new Pen(Color.Gray, 2), new Point(x1, y1), new Point(x2, y2)); //right
+            x1 = 0; y1 = Y_LEN - Y_LEN;     //see the right data (0, Y).
+            x2 = X_LEN; y2 = Y_LEN - Y_LEN; //see the right data (X, Y).
+            grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //top
+            x1 = 0; y1 = Y_LEN - 0;         //see the right data (0, 0).
+            x2 = X_LEN; y2 = Y_LEN - 0;     //see the right data (X, 0).
+            grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //bottom
 
             float[] DC_U = new float[360];
             float[] DC_V = new float[360];
@@ -95,9 +109,12 @@ namespace DrawLine2005
                 {
                     k = 360-2;
                 }
-                grp.DrawLine(new Pen(Color.Red, 2), new Point(k, Y_LEN - (int)DC_U[k]), new Point(k + 1, Y_LEN - (int)DC_U[k + 1]));
-                grp.DrawLine(new Pen(Color.Blue, 2), new Point(k, Y_LEN - (int)DC_V[k]), new Point(k + 1, Y_LEN - (int)DC_V[k + 1]));
-                grp.DrawLine(new Pen(Color.Green, 2), new Point(k, Y_LEN - (int)DC_W[k]), new Point(k + 1, Y_LEN - (int)DC_W[k + 1]));
+                x1 = j; y1 = Y_LEN - 0;
+                x2 = j+1; y2 = Y_LEN - 0;
+                grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //bottom
+                grp.DrawLine(new Pen(Color.Red, 2), new Point(j, Y_LEN - (int)DC_U[k]), new Point(j + 1, Y_LEN - (int)DC_U[k + 1]));
+                grp.DrawLine(new Pen(Color.Blue, 2), new Point(j, Y_LEN - (int)DC_V[k]), new Point(j + 1, Y_LEN - (int)DC_V[k + 1]));
+                grp.DrawLine(new Pen(Color.Green, 2), new Point(j, Y_LEN - (int)DC_W[k]), new Point(j + 1, Y_LEN - (int)DC_W[k + 1]));
             }
 
             //grp.DrawLine(new Pen(Color.Red, 10), new Point(0, 0), new Point(100, 100));

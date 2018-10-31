@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+//using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
 namespace DrawLine2005
 {
     partial class Form1
@@ -75,7 +84,7 @@ namespace DrawLine2005
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(753, 493);
+            this.ClientSize = new System.Drawing.Size(777, 513);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
@@ -95,8 +104,6 @@ namespace DrawLine2005
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
         //DATA.
-        //private int X_LEN = 720;
-        //private int Y_LEN = 400;
     }
 }
 
