@@ -11,14 +11,14 @@ C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\De
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\bin\Debug\DrawLine2005.exe
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\bin\Debug\DrawLine2005.pdb
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Debug\DrawLine2005.Form1.resources
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Debug\DrawLine2005.Properties.Resources.resources
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Debug\DrawLine2005.csproj.GenerateResource.Cache
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Release\ResolveAssemblyReference.cache
-C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Release\DrawLine2005.Form1.resources
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Release\DrawLine2005.Properties.Resources.resources
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Release\DrawLine2005.csproj.GenerateResource.Cache
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\bin\Release\DrawLine2005.exe
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\bin\Release\DrawLine2005.pdb
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Release\DrawLine2005.exe
 C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Release\DrawLine2005.pdb
+C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Debug\DrawLine2005.SVPWM.resources
+C:\Users\jerhua\_huamg_assa_\03-tech\03.061-Git\DrawLine2005\DrawLine2005\obj\Release\DrawLine2005.SVPWM.resources
