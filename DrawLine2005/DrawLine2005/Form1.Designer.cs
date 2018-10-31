@@ -47,10 +47,10 @@ namespace DrawLine2005
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(144, 69);
+            this.pictureBox1.Location = new System.Drawing.Point(16, 69);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(720, 542);
+            this.pictureBox1.Size = new System.Drawing.Size(956, 542);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -118,14 +118,14 @@ namespace DrawLine2005
         private Button button3;
 
         //DATA.
-        int X_LEN = 720; //can be get from user setting.
-        int Y_LEN = 400; //can be get from user setting.
+        static int X_LEN = 720; //can be get from user setting.
+        static int Y_LEN = 400; //can be get from user setting.
         int x1 = 0, x2 = 0;
         int y1 = 0, y2 = 0;
-        float[] DC_U = new float[360];
-        float[] DC_V = new float[360];
-        float[] DC_W = new float[360];
-        float[] DC_COM = new float[360];
+        float[] DC_U = new float[X_LEN];
+        float[] DC_V = new float[X_LEN];
+        float[] DC_W = new float[X_LEN];
+        float[] DC_COM = new float[X_LEN];
         
     }
 }

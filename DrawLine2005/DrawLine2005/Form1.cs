@@ -39,52 +39,65 @@ namespace DrawLine2005
             double pi = Math.PI;
             double a = 0;                           //alpha, or theta
 
-            for (int i = 0; i < 360; i++)
+            int i = 0;                              //angle index.
+            int x = 0;                              //add index.
+            int range = X_LEN;
+
+            if (range > 720)
             {
+                range = 720; //max to display 2 circles.
+            }
+            if (range < 360)
+            {
+                range = 360; //min to display 1 circles.
+            }
+            for (x = 0; x < range; x++)
+            {
+                i = x % 360;
                 a = ((double)i / 180) * pi;
                 if ((i >= 0) && (i < 60))
                 {
-                    u[i] = (float)(mr * Math.Cos(a - pi / 6));
-                    v[i] = (float)(mr * Math.Sin(a));
-                    w[i] = 0;
+                    u[x] = (float)(mr * Math.Cos(a - pi / 6));
+                    v[x] = (float)(mr * Math.Sin(a));
+                    w[x] = 0;
                 }
                 else if ((i >= 60) && (i < 120))
                 {
-                    u[i] = (float)(mr * Math.Cos(a - pi / 6));
-                    v[i] = (float)(mr * Math.Sin(a));
-                    w[i] = 0;
+                    u[x] = (float)(mr * Math.Cos(a - pi / 6));
+                    v[x] = (float)(mr * Math.Sin(a));
+                    w[x] = 0;
                 }
                 else if ((i >= 120) && (i < 180))
                 {
-                    u[i] = 0;
-                    v[i] = (float)(mr * Math.Sin(a - pi / 3));
-                    w[i] = (float)(-mr * Math.Cos(a - pi / 6));
+                    u[x] = 0;
+                    v[x] = (float)(mr * Math.Sin(a - pi / 3));
+                    w[x] = (float)(-mr * Math.Cos(a - pi / 6));
                 }
                 else if ((i >= 120) && (i < 180))
                 {
-                    u[i] = 0;
-                    v[i] = (float)(mr * Math.Sin(a - pi / 3));
-                    w[i] = (float)(-mr * Math.Cos(a - pi / 6));
+                    u[x] = 0;
+                    v[x] = (float)(mr * Math.Sin(a - pi / 3));
+                    w[x] = (float)(-mr * Math.Cos(a - pi / 6));
                 }
                 else if ((i >= 180) && (i < 240))
                 {
-                    u[i] = 0;
-                    v[i] = (float)(mr * Math.Sin(a - pi / 3));
-                    w[i] = (float)(-mr * Math.Cos(a - pi / 6));
+                    u[x] = 0;
+                    v[x] = (float)(mr * Math.Sin(a - pi / 3));
+                    w[x] = (float)(-mr * Math.Cos(a - pi / 6));
                 }
                 else if ((i >= 240) && (i < 300))
                 {
-                    u[i] = (float)(mr * Math.Cos(a + pi / 6));
-                    v[i] = 0;
-                    w[i] = (float)(-mr * Math.Sin(a));
+                    u[x] = (float)(mr * Math.Cos(a + pi / 6));
+                    v[x] = 0;
+                    w[x] = (float)(-mr * Math.Sin(a));
                 }
                 else if ((i >= 300) && (i < 360))
                 {
-                    u[i] = (float)(mr * Math.Cos(a + pi / 6));
-                    v[i] = 0;
-                    w[i] = (float)(-mr * Math.Sin(a));
+                    u[x] = (float)(mr * Math.Cos(a + pi / 6));
+                    v[x] = 0;
+                    w[x] = (float)(-mr * Math.Sin(a));
                 }
-                com[i] = (u[i] + v[i] + w[i]) / 3;
+                com[x] = (u[x] + v[x] + w[x]) / 3;
             }//for calculate.
         }
 
@@ -111,70 +124,21 @@ namespace DrawLine2005
 
             Calculate5SvpwmWithOneLow(DC_U, DC_V, DC_W, DC_COM);
             //double mr = (double)Y_LEN;              //modulation radio.
-            double sr = (double)(X_LEN / 360);      //scale radio.
+            //double sr = (double)(X_LEN / 360);      //scale radio.
 
-            //double pi = Math.PI;
-            //double a = 0;                           //alpha, or theta
-
-            //for (int i = 0; i < 360; i++)
-            //{
-            //    a = ((double)i / 180) * pi;
-            //    if ((i>=0) && (i<60))
-            //    {
-            //        DC_U[i] = (float)(mr * Math.Cos(a - pi / 6));
-            //        DC_V[i] = (float)(mr * Math.Sin(a));
-            //        DC_W[i] = 0;
-            //    }
-            //    else if ((i >= 60) && (i < 120))
-            //    {
-            //        DC_U[i] = (float)(mr * Math.Cos(a - pi / 6));
-            //        DC_V[i] = (float)(mr * Math.Sin(a));
-            //        DC_W[i] = 0;
-            //    }
-            //    else if ((i >= 120) && (i < 180))
-            //    {
-            //        DC_U[i] = 0;
-            //        DC_V[i] = (float)(mr * Math.Sin(a - pi / 3));
-            //        DC_W[i] = (float)(-mr * Math.Cos(a - pi / 6));
-            //    }
-            //    else if ((i >= 120) && (i < 180))
-            //    {
-            //        DC_U[i] = 0;
-            //        DC_V[i] = (float)(mr * Math.Sin(a - pi / 3));
-            //        DC_W[i] = (float)(-mr * Math.Cos(a - pi / 6));
-            //    }
-            //    else if ((i >= 180) && (i < 240))
-            //    {
-            //        DC_U[i] = 0;
-            //        DC_V[i] = (float)(mr * Math.Sin(a - pi / 3));
-            //        DC_W[i] = (float)(-mr * Math.Cos(a - pi / 6));
-            //    }
-            //    else if ((i >= 240) && (i < 300))
-            //    {
-            //        DC_U[i] = (float)(mr * Math.Cos(a + pi / 6));
-            //        DC_V[i] = 0;
-            //        DC_W[i] = (float)(-mr * Math.Sin(a));
-            //    }
-            //    else if ((i >= 300) && (i < 360))
-            //    {
-            //        DC_U[i] = (float)(mr * Math.Cos(a + pi / 6));
-            //        DC_V[i] = 0;
-            //        DC_W[i] = (float)(-mr * Math.Sin(a));
-            //    }
-            //    DC_COM[i] = (DC_U[i] + DC_V[i] + DC_W[i])/3;
-            //}//for calculate.
             //draw lines.
-            for (int j = 0; j < X_LEN; j++)
+            for (int x = 0; x < X_LEN; x++)
             {
-                int k = (int)((double)j / sr);
-                if (k > 360-2)
+                //int k = (int)((double)x / sr);
+                int k = x;
+                if (k > X_LEN - 2)
                 {
-                    k = 360-2;
+                    k = X_LEN - 2;
                 }
-                grp.DrawLine(new Pen(Color.Red, 2), new Point(j, Y_LEN - (int)DC_U[k]), new Point(j + 1, Y_LEN - (int)DC_U[k + 1]));
-                grp.DrawLine(new Pen(Color.Blue, 2), new Point(j, Y_LEN - (int)DC_V[k]), new Point(j + 1, Y_LEN - (int)DC_V[k + 1]));
-                grp.DrawLine(new Pen(Color.Green, 2), new Point(j, Y_LEN - (int)DC_W[k]), new Point(j + 1, Y_LEN - (int)DC_W[k + 1]));
-                grp.DrawLine(new Pen(Color.LightPink, 2), new Point(j, Y_LEN - (int)DC_COM[k]), new Point(j + 1, Y_LEN - (int)DC_COM[k + 1]));
+                grp.DrawLine(new Pen(Color.Red, 2), new Point(x, Y_LEN - (int)DC_U[k]), new Point(x + 1, Y_LEN - (int)DC_U[k + 1]));
+                grp.DrawLine(new Pen(Color.Blue, 2), new Point(x, Y_LEN - (int)DC_V[k]), new Point(x + 1, Y_LEN - (int)DC_V[k + 1]));
+                grp.DrawLine(new Pen(Color.Green, 2), new Point(x, Y_LEN - (int)DC_W[k]), new Point(x + 1, Y_LEN - (int)DC_W[k + 1]));
+                grp.DrawLine(new Pen(Color.LightPink, 2), new Point(x, Y_LEN - (int)DC_COM[k]), new Point(x + 1, Y_LEN - (int)DC_COM[k + 1]));
             }
 
             //grp.DrawLine(new Pen(Color.Red, 10), new Point(0, 0), new Point(100, 100));
