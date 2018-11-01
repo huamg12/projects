@@ -16,7 +16,11 @@ namespace DrawLine2005
             InitializeComponent();
 
             pi = Math.PI;
+            InitializeDraw();
+        }
 
+        private void InitializeDraw()
+        {
             bmp = new Bitmap(X_LEN, Y_LEN);
             grp = Graphics.FromImage(bmp);
             DrawPictureFrameLines(grp);
@@ -134,6 +138,7 @@ namespace DrawLine2005
                 DC_W[i] = 0;
                 DC_COM[i] = 0;
             }
+            InitializeDraw();
         }
 
         /** 五段式 SVPWM 占空比计算 MATLAB 源代码(一相恒低)   //const high = mr*(1-uvw).
