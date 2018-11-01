@@ -47,6 +47,7 @@ namespace DrawLine2005
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.HighlightText;
             this.pictureBox1.Location = new System.Drawing.Point(16, 69);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
@@ -96,7 +97,7 @@ namespace DrawLine2005
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(780, 528);
+            this.ClientSize = new System.Drawing.Size(763, 536);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
@@ -118,7 +119,7 @@ namespace DrawLine2005
         private Button button3;
 
         //DATA.
-        static int X_LEN = 720; //can be get from user setting.
+        static int X_LEN = 700; //can be get from user setting.
         static int Y_LEN = 400; //can be get from user setting.
         int x1 = 0, x2 = 0;
         int y1 = 0, y2 = 0;

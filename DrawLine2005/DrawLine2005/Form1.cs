@@ -19,21 +19,59 @@ namespace DrawLine2005
 
         private void DrawPictureFrameLines(Graphics grp)
         {
-            SetStartToTargetPoints(0, Y_LEN - 0,
-                           0, Y_LEN - Y_LEN); //see the right data (0, 0)->(0, Y).
+            SetStartToTargetPoints(0, Y_LEN - 0, 0, Y_LEN - Y_LEN); //see the right data (0, 0)->(0, Y).
             grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //left
 
-            SetStartToTargetPoints(X_LEN, Y_LEN - 0,
-                                   X_LEN, Y_LEN - Y_LEN); //see the right data (X, 0)->(X, Y).
+            SetStartToTargetPoints(X_LEN, Y_LEN - 0, X_LEN, Y_LEN - Y_LEN); //see the right data (X, 0)->(X, Y).
             grp.DrawLine(new Pen(Color.Gray, 2), new Point(x1, y1), new Point(x2, y2)); //right
 
-            SetStartToTargetPoints(0, Y_LEN - Y_LEN,
-                                   X_LEN, Y_LEN - Y_LEN); //see the right data (0, Y)->(X, Y).
+            SetStartToTargetPoints(0, Y_LEN - Y_LEN, X_LEN, Y_LEN - Y_LEN); //see the right data (0, Y)->(X, Y).
             grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //top
 
-            SetStartToTargetPoints(0, Y_LEN - 0,
-                                   X_LEN, Y_LEN - 0); //see the right data (0, 0)->(X,0).
-            grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //bottom
+            SetStartToTargetPoints(0, Y_LEN - 0, X_LEN, Y_LEN - 0); //see the right data (0, 0)->(X,0).
+            grp.DrawLine(new Pen(Color.Gray, 2), new Point(x1, y1), new Point(x2, y2)); //bottom
+
+            //draw grad
+            int grad = 50;
+            int dot = 5;
+            int flag = 0;
+            int lines = Y_LEN / grad;
+            int columns = X_LEN / grad;
+            float px = (float)1;
+            //draw lines.
+            for (int i = 1; i < lines; i++ )
+            {
+                for (int p = 0; p < X_LEN; p = p + dot) //points
+                {
+                    if (flag == 1)
+                    {
+                        SetStartToTargetPoints(p, i * grad, p + dot, i * grad); //from north-west.
+                        grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //lines
+                        flag = 0;
+                    }
+                    else
+                    {
+                        flag = 1;
+                    }
+                }
+            }
+            //draw columns.
+            for (int i = 1; i < columns; i++)
+            {
+                for (int p = 0; p < Y_LEN; p = p + dot) //points
+                {
+                    if (flag == 1)
+                    {
+                        SetStartToTargetPoints(i * grad, p, i * grad, p + dot); //from north-west.
+                        grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //columns
+                        flag = 0;
+                    }
+                    else
+                    {
+                        flag = 1;
+                    }
+                }
+            }
         }
 
         private void DrawPictureDataLines(Graphics grp)

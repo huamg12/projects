@@ -1,9 +1,10 @@
 bin/
 obj/
+Debug/
+Release/
 *.resources
 *.pdb
-
-
+*.Cache
 
 ## Library/*
 ## !Library/*.asset
