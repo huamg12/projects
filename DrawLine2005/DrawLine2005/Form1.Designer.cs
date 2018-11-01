@@ -122,12 +122,12 @@ namespace DrawLine2005
         static int Y_LEN = 400; //can be get from user setting.
         int x1 = 0, x2 = 0;
         int y1 = 0, y2 = 0;
-        float[] DC_U = new float[X_LEN];
-        float[] DC_V = new float[X_LEN];
-        float[] DC_W = new float[X_LEN];
-        float[] DC_COM = new float[X_LEN];
+        float[] DC_U = new float[X_LEN];        //Duty Cycle of U phase.
+        float[] DC_V = new float[X_LEN];        //Duty Cycle of V phase.
+        float[] DC_W = new float[X_LEN];        //Duty Cycle of W phase.
+        float[] DC_COM = new float[X_LEN];      //Duty Cycle of U+V+W phase.
         double Ub = (double)Y_LEN;              //Voltage base.
-        double mr = 1;                          //modulation radio.
+        double mr = 0.8;                        //modulation radio.
         double sr = (double)(360) / X_LEN;      //scale radio.       x/X_LEN = i/360.   i = x * (360/X_LEN)
         double a = 0;                           //alpha, or theta
         double i = 0;                           //angle index.

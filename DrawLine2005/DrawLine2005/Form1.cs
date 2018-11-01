@@ -219,41 +219,41 @@ namespace DrawLine2005
                 a = (i / 180) * pi;
                 if ((i >= 0) && (i < 60))
                 {
-                    u[x] = (float)(Ub * (0.5 * (1 + mr * Math.Cos(a - pi / 6))));
-                    v[x] = (float)(Ub * (0.5 * (1 - mr * Math.Cos(a - pi / 6)) + mr * Math.Sin(a)));
-                    w[x] = (float)(Ub * (0.5 * (1 - mr * Math.Cos(a - pi / 6))));
+                    u[x] = (float)(Ub *  (1 + mr * Math.Cos(a - pi / 6))/2);
+                    v[x] = (float)(Ub * ((1 - mr * Math.Cos(a - pi / 6))/2 + mr * Math.Sin(a)));
+                    w[x] = (float)(Ub *   (1 - mr * Math.Cos(a - pi / 6))/2);
                 }
                 else if ((i >= 60) && (i < 120))
                 {
-                    u[x] = (float)(Ub * (0.5 * (1 - mr * Math.Sin(a)) + mr * Math.Sin(a + pi / 3)));
-                    v[x] = (float)(Ub * (0.5 * (1 + mr * Math.Sin(a))));
-                    w[x] = (float)(Ub * (0.5 * (1 - mr * Math.Sin(a))));
+                    u[x] = (float)(Ub * ((1 - mr * Math.Sin(a))/2 + mr * Math.Sin(a + pi / 3)));
+                    v[x] = (float)(Ub *  (1 + mr * Math.Sin(a))/2);
+                    w[x] = (float)(Ub *  (1 - mr * Math.Sin(a))/2);
                 }
                 else if ((i >= 120) && (i < 180))
                 {
-                    u[x] = (float)(Ub * 0.5 * (1 - mr * Math.Sin(a - pi / 3)));
-                    v[x] = (float)(Ub * 0.5 * (1 + mr * Math.Sin(a - pi / 3)));
-                    w[x] = (float)(Ub * (0.5 * (1 - mr * Math.Sin(a - pi / 3)) - mr * Math.Sin(a + pi / 3)));
+                    u[x] = (float)(Ub *  (1 - mr * Math.Sin(a - pi / 3))/2);
+                    v[x] = (float)(Ub *  (1 + mr * Math.Sin(a - pi / 3))/2);
+                    w[x] = (float)(Ub * ((1 - mr * Math.Sin(a - pi / 3))/2 - mr * Math.Sin(a + pi / 3)));
                 }
                 else if ((i >= 180) && (i < 240))
                 {
-                    u[x] = (float)(Ub * 0.5 * (1 + mr * Math.Cos(a - pi / 6)));
-                    v[x] = (float)(Ub * (0.5 * (1 + mr * Math.Cos(a - pi / 6)) + mr * Math.Sin(a - pi / 3)));
-                    w[x] = (float)(Ub * 0.5 * (1 - mr * Math.Cos(a - pi / 6)));
+                    u[x] = (float)(Ub *  (1 + mr * Math.Cos(a - pi / 6))/2);
+                    v[x] = (float)(Ub * ((1 + mr * Math.Cos(a - pi / 6))/2 + mr * Math.Sin(a - pi / 3)));
+                    w[x] = (float)(Ub *  (1 - mr * Math.Cos(a - pi / 6))/2);
                 }
                 else if ((i >= 240) && (i < 300))
                 {
-                    u[x] = (float)(Ub * (0.5 * (1 + mr * Math.Sin(a)) - mr * Math.Sin(a - pi / 3)));
-                    v[x] = (float)(Ub * 0.5 * (1 + mr * Math.Sin(a)));
-                    w[x] = (float)(Ub * 0.5 * (1 - mr * Math.Sin(a)));
+                    u[x] = (float)(Ub * ((1 + mr * Math.Sin(a))/2 - mr * Math.Sin(a - pi / 3)));
+                    v[x] = (float)(Ub *  (1 + mr * Math.Sin(a))/2);
+                    w[x] = (float)(Ub *  (1 - mr * Math.Sin(a))/2);
                 }
                 else if ((i >= 300) && (i < 360))
                 {
-                    u[x] = (float)(Ub * 0.5 * (1 + mr * Math.Cos(a + pi / 6)));
-                    v[x] = (float)(Ub * 0.5 * (1 - mr * Math.Cos(a + pi / 6)));
-                    w[x] = (float)(Ub * (0.5 * (1 - mr * Math.Cos(a + pi / 6)) - mr * Math.Sin(a)));
+                    u[x] = (float)(Ub *  (1 + mr * Math.Cos(a + pi / 6))/2);
+                    v[x] = (float)(Ub *  (1 - mr * Math.Cos(a + pi / 6))/2);
+                    w[x] = (float)(Ub * ((1 - mr * Math.Cos(a + pi / 6))/2 - mr * Math.Sin(a)));
                 }
-                //com[x] = (u[x] + v[x] + w[x]) / 3;
+                com[x] = (u[x] + v[x] + w[x])/3;
             }//for calculate.
         }
 
