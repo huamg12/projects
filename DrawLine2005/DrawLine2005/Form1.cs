@@ -14,7 +14,21 @@ namespace DrawLine2005
         public SVPWM()
         {
             InitializeComponent();
+
             pi = Math.PI;
+
+            bmp = new Bitmap(X_LEN, Y_LEN);
+            grp = Graphics.FromImage(bmp);
+            DrawPictureFrameLines(grp);
+            pictureBox1.Image = bmp;
+        }
+
+        private void SetStartToTargetPoints(int px1, int py1, int px2, int py2)
+        {
+            x1 = px1;
+            y1 = py1;
+            x2 = px2;
+            y2 = py2;
         }
 
         private void DrawPictureFrameLines(Graphics grp)
@@ -37,7 +51,6 @@ namespace DrawLine2005
             int flag = 0;
             int lines = Y_LEN / grad;
             int columns = X_LEN / grad;
-            float px = (float)1;
             //draw lines.
             for (int i = 1; i < lines; i++ )
             {
@@ -72,32 +85,7 @@ namespace DrawLine2005
                     }
                 }
             }
-        }
-
-        private void DrawPictureDataLines(Graphics grp)
-        {
-            for (int x = 0; x < X_LEN; x++)
-            {
-                //double sr = (double)(X_LEN / 360);      //scale radio.
-                //int k = (int)((double)x / sr);          //just usr 360 points.
-                int k = x;
-                if (k > X_LEN - 2)
-                {
-                    k = X_LEN - 2;
-                }
-                grp.DrawLine(new Pen(Color.Red, 2), new Point(x, Y_LEN - (int)DC_U[k]), new Point(x + 1, Y_LEN - (int)DC_U[k + 1]));
-                grp.DrawLine(new Pen(Color.Blue, 2), new Point(x, Y_LEN - (int)DC_V[k]), new Point(x + 1, Y_LEN - (int)DC_V[k + 1]));
-                grp.DrawLine(new Pen(Color.Green, 2), new Point(x, Y_LEN - (int)DC_W[k]), new Point(x + 1, Y_LEN - (int)DC_W[k + 1]));
-                grp.DrawLine(new Pen(Color.LightPink, 2), new Point(x, Y_LEN - (int)DC_COM[k]), new Point(x + 1, Y_LEN - (int)DC_COM[k + 1]));
-            }
-        }
-
-        private void SetStartToTargetPoints(int px1, int py1, int px2, int py2)
-        {
-            x1 = px1;
-            y1 = py1;
-            x2 = px2;
-            y2 = py2;
+            pictureBox1.Image = bmp;
         }
 
         private int GetDrawLengthRange(int LenRange)
@@ -118,7 +106,26 @@ namespace DrawLine2005
             return LimitRange;
         }
 
-         private void ClearCalculatedData()
+        private void DrawPictureDataLines(Graphics grp)
+        {
+            for (int x = 0; x < X_LEN; x++)
+            {
+                //double sr = (double)(X_LEN / 360);      //scale radio.
+                //int k = (int)((double)x / sr);          //just usr 360 points.
+                int k = x;
+                if (k > X_LEN - 2)
+                {
+                    k = X_LEN - 2;
+                }
+                grp.DrawLine(new Pen(Color.Red, 2), new Point(x, Y_LEN - (int)DC_U[k]), new Point(x + 1, Y_LEN - (int)DC_U[k + 1]));
+                grp.DrawLine(new Pen(Color.Blue, 2), new Point(x, Y_LEN - (int)DC_V[k]), new Point(x + 1, Y_LEN - (int)DC_V[k + 1]));
+                grp.DrawLine(new Pen(Color.Green, 2), new Point(x, Y_LEN - (int)DC_W[k]), new Point(x + 1, Y_LEN - (int)DC_W[k + 1]));
+                grp.DrawLine(new Pen(Color.LightPink, 2), new Point(x, Y_LEN - (int)DC_COM[k]), new Point(x + 1, Y_LEN - (int)DC_COM[k + 1]));
+            }
+            pictureBox1.Image = bmp;
+        }
+
+        private void ClearCalculatedData()
         {
             for (int i = 0; i < X_LEN; i++)
             {
@@ -297,41 +304,29 @@ namespace DrawLine2005
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(X_LEN, Y_LEN);
-            Graphics grp = Graphics.FromImage(bmp);
-            DrawPictureFrameLines(grp);
             //calculate
             ClearCalculatedData();
             Calculate5SvpwmWithOneLow(DC_U, DC_V, DC_W, DC_COM);
             //draw lines.
             DrawPictureDataLines(grp);
-            pictureBox1.Image = bmp;
         }//button 1 click.
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(X_LEN, Y_LEN);
-            Graphics grp = Graphics.FromImage(bmp);
-            DrawPictureFrameLines(grp);
             //calculate
             ClearCalculatedData();
             Calculate5SvpwmWithOneHigh(DC_U, DC_V, DC_W, DC_COM);
             //draw lines.
             DrawPictureDataLines(grp);
-            pictureBox1.Image = bmp;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(X_LEN, Y_LEN);
-            Graphics grp = Graphics.FromImage(bmp);
-            DrawPictureFrameLines(grp);
             //calculate
             ClearCalculatedData();
             Calculate7Svpwm(DC_U, DC_V, DC_W, DC_COM);
             //draw lines.
             DrawPictureDataLines(grp);
-            pictureBox1.Image = bmp;
         }
 
         private void clear_Click(object sender, EventArgs e)
