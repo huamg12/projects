@@ -51,21 +51,10 @@ namespace DrawLine2005
             this.pictureBox1.Location = new System.Drawing.Point(16, 69);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(723, 446);
+            this.pictureBox1.Size = new System.Drawing.Size(700, 400);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(161, 13);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(125, 48);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Draw 5-SVPWM    1 High";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // openFileDialog1
             // 
@@ -82,6 +71,17 @@ namespace DrawLine2005
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(161, 13);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(125, 48);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Draw 5-SVPWM    1 High";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(364, 13);
@@ -97,7 +97,7 @@ namespace DrawLine2005
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(763, 536);
+            this.ClientSize = new System.Drawing.Size(737, 487);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
@@ -128,10 +128,8 @@ namespace DrawLine2005
         float[] DC_W = new float[X_LEN];        //Duty Cycle of W phase.
         float[] DC_COM = new float[X_LEN];      //Duty Cycle of U+V+W phase.
         double Ub = (double)Y_LEN;              //Voltage base.
-        double mr = 0.8;                        //modulation radio.
-        double sr = (double)(360) / X_LEN;      //scale radio.       x/X_LEN = i/360.   i = x * (360/X_LEN)
-        double a = 0;                           //alpha, or theta
-        double i = 0;                           //angle index.
+        double mr = 0.9;                        //modulation radio.
+        double xsr = (double)(360) / X_LEN;     //x-axis scale radio.       x/X_LEN = i/360.   i = x * (360/X_LEN)
         double pi = 0;
         Bitmap bmp;
         Graphics grp;
