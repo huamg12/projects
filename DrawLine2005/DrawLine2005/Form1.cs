@@ -162,38 +162,49 @@ namespace DrawLine2005
                     u[x] = (float)(Ub * mr * Math.Cos(radian - pi / 6));
                     v[x] = (float)(Ub * mr * Math.Sin(radian));
                     w[x] = 0;
+                    com[x] = u[x] * u[x] + v[x] * v[x] + (float)(u[x] * v[x] * Math.Cos(2 * pi / 3));
                 }
                 else if ((angle >= 60) && (angle < 120))
                 {
                     u[x] = (float)(Ub * mr * Math.Cos(radian - pi / 6));
                     v[x] = (float)(Ub * mr * Math.Sin(radian));
                     w[x] = 0;
+                    com[x] = u[x] * u[x] + v[x] * v[x] + (float)(u[x] * v[x] * Math.Cos(2 * pi / 3));
                 }
                 else if ((angle >= 120) && (angle < 180))
                 {
                     u[x] = 0;
                     v[x] = (float)(Ub * mr * Math.Sin(radian - pi / 3));
                     w[x] = (float)(-Ub * mr * Math.Cos(radian - pi / 6));
+                    com[x] = w[x] * w[x] + v[x] * v[x] + (float)(w[x] * v[x] * Math.Cos(2 * pi / 3));
                 }
                 else if ((angle >= 180) && (angle < 240))
                 {
                     u[x] = 0;
                     v[x] = (float)(Ub * mr * Math.Sin(radian - pi / 3));
                     w[x] = (float)(-Ub * mr * Math.Cos(radian - pi / 6));
+                    com[x] = w[x] * w[x] + v[x] * v[x] + (float)(w[x] * v[x] * Math.Cos(2 * pi / 3));
                 }
                 else if ((angle >= 240) && (angle < 300))
                 {
                     u[x] = (float)(Ub * mr * Math.Cos(radian + pi / 6));
                     v[x] = 0;
                     w[x] = (float)(-Ub * mr * Math.Sin(radian));
+                    com[x] = u[x] * u[x] + w[x] * w[x] + (float)(u[x] * w[x] * Math.Cos(2 * pi / 3));
                 }
                 else if ((angle >= 300) && (angle < 360))
                 {
                     u[x] = (float)(Ub * mr * Math.Cos(radian + pi / 6));
                     v[x] = 0;
                     w[x] = (float)(-Ub * mr * Math.Sin(radian));
+                    com[x] = u[x] * u[x] + w[x] * w[x] + (float)(u[x] * w[x] * Math.Cos(2 * pi / 3));
                 }
-                com[x] = (u[x] + v[x] + w[x]) / 3;
+                //com[x] = (u[x] + v[x] + w[x]) / 3;
+                ////com[x] = u[x];
+                ////com[x] += v[x] * (float)(Math.Cos(radian - 2 * pi / 3));
+                ////com[x] += w[x] * (float)(Math.Cos(radian + 2 * pi / 3));
+                ////com[x] -= Y_LEN / 2;
+                com[x] = (float)Math.Sqrt(com[x]) - Y_LEN / 2;
             }//for calculate.
         }
 
