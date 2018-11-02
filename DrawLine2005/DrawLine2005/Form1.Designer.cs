@@ -119,8 +119,8 @@ namespace DrawLine2005
         private Button button3;
 
         //DATA.
-        static int X_LEN = 700; //can be get from user setting.
-        static int Y_LEN = 400; //can be get from user setting.
+        static int X_LEN = 720; //can be get from user setting.
+        static int Y_LEN = 481; //can be get from user setting.
         int x1 = 0, x2 = 0;
         int y1 = 0, y2 = 0;
         float[] DC_U = new float[X_LEN];        //Duty Cycle of U phase.

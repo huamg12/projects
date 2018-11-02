@@ -37,16 +37,16 @@ namespace DrawLine2005
 
         private void DrawPictureFrameLines(Graphics grp)
         {
-            SetStartToTargetPoints(0, Y_LEN - 0, 0, Y_LEN - Y_LEN); //see the right data (0, 0)->(0, Y).
+            SetStartToTargetPoints(0, Y_LEN - 0, 0, Y_LEN - Y_LEN); //see the "-" right data (0, 0)->(0, Y).
             grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //left
 
-            SetStartToTargetPoints(X_LEN, Y_LEN - 0, X_LEN, Y_LEN - Y_LEN); //see the right data (X, 0)->(X, Y).
+            SetStartToTargetPoints(X_LEN, Y_LEN - 0, X_LEN, Y_LEN - Y_LEN); //see the "-" right data (X, 0)->(X, Y).
             grp.DrawLine(new Pen(Color.Gray, 2), new Point(x1, y1), new Point(x2, y2)); //right
 
-            SetStartToTargetPoints(0, Y_LEN - Y_LEN, X_LEN, Y_LEN - Y_LEN); //see the right data (0, Y)->(X, Y).
+            SetStartToTargetPoints(0, Y_LEN - Y_LEN, X_LEN, Y_LEN - Y_LEN); //see the "-" right data (0, Y)->(X, Y).
             grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //top
 
-            SetStartToTargetPoints(0, Y_LEN - 0, X_LEN, Y_LEN - 0); //see the right data (0, 0)->(X,0).
+            SetStartToTargetPoints(0, Y_LEN - 0, X_LEN, Y_LEN - 0); //see the "-" right data (0, 0)->(X,0).
             grp.DrawLine(new Pen(Color.Gray, 2), new Point(x1, y1), new Point(x2, y2)); //bottom
 
             //draw grad
@@ -54,7 +54,8 @@ namespace DrawLine2005
             int dot = 5;
             int flag = 0;
             int lines = Y_LEN / grad;
-            int columns = X_LEN / grad;
+            int columns = 12; //fix 30 degree grad. X_LEN / (30 / xsr) = xsr * X_LEN / 30 = 360/30 = 12.
+            int gapx = 30;
             //draw lines.
             for (int y = 0; y <= lines; y++ )
             {
@@ -81,7 +82,7 @@ namespace DrawLine2005
                 {
                     if (flag == 0)
                     {
-                        cpx = (int)(x * grad / xsr);
+                        cpx = (int)(x * gapx / xsr);
                         SetStartToTargetPoints(cpx, Y_LEN - p, cpx, Y_LEN - (p + dot)); //from south-west.
                         grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //columns
                         flag = 1;
@@ -142,7 +143,7 @@ namespace DrawLine2005
             InitializeDraw();
         }
 
-        /** 五段式 SVPWM 占空比计算 MATLAB 源代码(一相恒低)   //const high = mr*(1-uvw).
+        /** 五段式 SVPWM 占空比计算源代码(一相恒低)   //const high = mr*(1-uvw).
          *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
          *  Author: Jerry.Hua
          *  Description:
@@ -196,7 +197,7 @@ namespace DrawLine2005
             }//for calculate.
         }
 
-        /** 五段式 SVPWM 占空比计算 MATLAB 源代码(一相恒高)   //const high = mr*(1-uvw).
+        /** 五段式 SVPWM 占空比计算源代码(一相恒高)   //const high = mr*(1-uvw).
          *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
          *  Author: Jerry.Hua
          *  Description:
@@ -253,7 +254,7 @@ namespace DrawLine2005
             }//for calculate.
         }
 
-        /** 七段式 SVPWM 占空比计算 MATLAB 源代码
+        /** 七段式 SVPWM 占空比计算源代码
          *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
          *  Author: Jerry.Hua
          *  Description:
