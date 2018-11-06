@@ -14,17 +14,22 @@ namespace DrawLine2005
         public SVPWM()
         {
             InitializeComponent();
+            InitializeParameter();
+            InitializeDraw();
+        }
 
+        private void InitializeParameter()
+        {
             pi = Math.PI;
+            mr = 0.9;
+            GetModulationRadio();
 
-            X_LEN = pictureBox1.Width;
             Y_LEN = pictureBox1.Height;
+            X_LEN = pictureBox1.Width;
             X_LEN = GetDrawLengthRange(X_LEN);
 
-            Ub = (double)Y_LEN;              //Voltage base.
+            Ub = (double)Y_LEN;                 //Voltage base.
             xtoa = (double)(CIRCLE) / X_LEN;    //x to angle.       x/X_LEN = i/360.   i = x * (360/X_LEN)
-            
-            InitializeDraw();
         }
 
         private void InitializeDraw()
@@ -35,23 +40,21 @@ namespace DrawLine2005
             pictureBox1.Image = bmp;
         }
 
-        private void DrawStartToTargetPoints(int px1, int py1, int px2, int py2)
+        private void DrawGrayFromStartToTargetPoints(int px1, int py1, int px2, int py2, int width)
         {
-            grp.DrawLine(new Pen(Color.Gray, 2), new Point(px1, py1), new Point(px2, py2));
+            grp.DrawLine(new Pen(Color.Gray, width), new Point(px1, py1), new Point(px2, py2));
         }
 
         private void DrawPictureFrameLines(Graphics grp)
         {
-            int x1 = 0, x2 = 0;
-            int y1 = 0, y2 = 0;
             //Top board line.
-            DrawStartToTargetPoints(0, Y_LEN - Y_LEN, X_LEN, Y_LEN - Y_LEN); //see the "-" right data (0, 0)->(0, Y).
+            DrawGrayFromStartToTargetPoints(0, Y_LEN - Y_LEN, X_LEN, Y_LEN - Y_LEN, 2); //see the "-" right data (0, 0)->(0, Y).
             //Bottom board line.
-            DrawStartToTargetPoints(0, Y_LEN - 0, X_LEN, Y_LEN - 0);
+            DrawGrayFromStartToTargetPoints(0, Y_LEN - 0, X_LEN, Y_LEN - 0, 2);
             //Left board line.
-            DrawStartToTargetPoints(0, Y_LEN - 0, 0, Y_LEN - Y_LEN);
+            DrawGrayFromStartToTargetPoints(0, Y_LEN - 0, 0, Y_LEN - Y_LEN, 2);
             //Right board line.
-            DrawStartToTargetPoints(X_LEN, Y_LEN - 0, X_LEN, Y_LEN - Y_LEN);
+            DrawGrayFromStartToTargetPoints(X_LEN, Y_LEN - 0, X_LEN, Y_LEN - Y_LEN, 2);
 
             //draw grad lines.
             int columns = 12;                       //fix 30 degree grad. 360/30 = 12.
@@ -71,8 +74,7 @@ namespace DrawLine2005
                     if (flag == 0)
                     {
                         int cpy = (int)(n * grad); //lines point y axis.
-                        DrawStartToTargetPoints(p, Y_LEN - cpy, p + dot, Y_LEN - cpy); //from south-west.
-                        grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //lines
+                        DrawGrayFromStartToTargetPoints(p, Y_LEN - cpy, p + dot, Y_LEN - cpy, 1); //from south-west.
                         flag = 1;
                     }
                     else
@@ -89,8 +91,7 @@ namespace DrawLine2005
                     if (flag == 0)
                     {
                         int cpx = (int)(c * gapa / xtoa); //column point x axis.
-                        DrawStartToTargetPoints(cpx, Y_LEN - p, cpx, Y_LEN - (p + dot)); //from south-west.
-                        grp.DrawLine(new Pen(Color.Gray, 1), new Point(x1, y1), new Point(x2, y2)); //columns
+                        DrawGrayFromStartToTargetPoints(cpx, Y_LEN - p, cpx, Y_LEN - (p + dot), 1); //from south-west.
                         flag = 1;
                     }
                     else
@@ -132,7 +133,7 @@ namespace DrawLine2005
                 grp.DrawLine(new Pen(Color.Red, 2), new Point(x, Y_LEN - (int)DC_U[k]), new Point(x + 1, Y_LEN - (int)DC_U[k + 1]));
                 grp.DrawLine(new Pen(Color.Blue, 2), new Point(x, Y_LEN - (int)DC_V[k]), new Point(x + 1, Y_LEN - (int)DC_V[k + 1]));
                 grp.DrawLine(new Pen(Color.Green, 2), new Point(x, Y_LEN - (int)DC_W[k]), new Point(x + 1, Y_LEN - (int)DC_W[k + 1]));
-                grp.DrawLine(new Pen(Color.LightPink, 2), new Point(x, Y_LEN - (int)DC_COM[k]), new Point(x + 1, Y_LEN - (int)DC_COM[k + 1]));
+                //grp.DrawLine(new Pen(Color.LightPink, 2), new Point(x, Y_LEN - (int)DC_COM[k]), new Point(x + 1, Y_LEN - (int)DC_COM[k + 1]));
             }
             pictureBox1.Image = bmp;
         }
@@ -166,10 +167,10 @@ namespace DrawLine2005
         }
 
         /** 五段式 SVPWM 占空比计算源代码(一相恒低)   //const high = mr*(1-uvw).
-         *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
+         *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND
          *  Author: Jerry.Hua
          *  Description:
-         *  1. calculation of 5 segments SVPWM , one phase is low(connected to
+         *  Function: Calculation of 5 segments SVPWM , one phase is low(connected to
          *  GND) during one PWM period
          * */
         private void Calculate5SvpwmWithOneLow(float[] u, float[] v, float[] w, float[] com)
@@ -232,10 +233,10 @@ namespace DrawLine2005
         }
 
         /** 五段式 SVPWM 占空比计算源代码(一相恒高)   //const high = mr*(1-uvw).
-         *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
+         *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND
          *  Author: Jerry.Hua
          *  Description:
-         *  1. calculation of 5 segments SVPWM , one phase is low(connected to
+         *  Function: Calculation of 5 segments SVPWM , one phase is low(connected to
          *  GND) during one PWM period
          * */
         private void Calculate5SvpwmWithOneHigh(float[] u, float[] v, float[] w, float[] com)
@@ -290,10 +291,10 @@ namespace DrawLine2005
         }
 
         /** 七段式 SVPWM 占空比计算源代码
-         *  File Name: DutyCycle_5_Segment_SVPWM_OnePhaseToGND.m
+         *  File Name: DutyCycle_7_Segment_SVPWM
          *  Author: Jerry.Hua
          *  Description:
-         *  1. calculation of 7 segments SVPWM.
+         *  Function: Calculation of 7 segments SVPWM.
          * */
         private void Calculate7Svpwm(float[] u, float[] v, float[] w, float[] com)
         {
@@ -345,28 +346,22 @@ namespace DrawLine2005
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //calculate
             ClearCalculatedData();
             Calculate5SvpwmWithOneLow(DC_U, DC_V, DC_W, DC_COM);
-            //draw lines.
             DrawPictureDataLines(grp);
-        }//button 1 click.
+        }
 
         private void button2_Click(object sender, EventArgs e)
-        {
-            //calculate
+        {            
             ClearCalculatedData();
             Calculate5SvpwmWithOneHigh(DC_U, DC_V, DC_W, DC_COM);
-            //draw lines.
             DrawPictureDataLines(grp);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //calculate
             ClearCalculatedData();
             Calculate7Svpwm(DC_U, DC_V, DC_W, DC_COM);
-            //draw lines.
             DrawPictureDataLines(grp);
         }
 
