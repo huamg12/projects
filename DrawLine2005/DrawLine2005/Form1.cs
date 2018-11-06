@@ -19,9 +19,10 @@ namespace DrawLine2005
 
             X_LEN = pictureBox1.Width;
             Y_LEN = pictureBox1.Height;
+            X_LEN = GetDrawLengthRange(X_LEN);
 
             Ub = (double)Y_LEN;              //Voltage base.
-            xtoa = (double)(360) / X_LEN;    //x to angle.       x/X_LEN = i/360.   i = x * (360/X_LEN)
+            xtoa = (double)(CIRCLE) / X_LEN;    //x to angle.       x/X_LEN = i/360.   i = x * (360/X_LEN)
             
             InitializeDraw();
         }
@@ -36,7 +37,7 @@ namespace DrawLine2005
 
         private void DrawStartToTargetPoints(int px1, int py1, int px2, int py2)
         {
-            grp.DrawLine(new Pen(Color.Gray, 1), new Point(px1, py1), new Point(px2, py2));
+            grp.DrawLine(new Pen(Color.Gray, 2), new Point(px1, py1), new Point(px2, py2));
         }
 
         private void DrawPictureFrameLines(Graphics grp)
@@ -54,7 +55,7 @@ namespace DrawLine2005
 
             //draw grad lines.
             int columns = 12;                       //fix 30 degree grad. 360/30 = 12.
-            int gapa = 30;                          //angle gap.
+            int gapa = CIRCLE / columns;            //angle gap.
             float gapx = (float)(gapa / xtoa);      //x points gap.
 
             int lines = 8;  // (int)(Y_LEN / grad);
@@ -173,10 +174,11 @@ namespace DrawLine2005
          * */
         private void Calculate5SvpwmWithOneLow(float[] u, float[] v, float[] w, float[] com)
         {
-            int range = GetDrawLengthRange( X_LEN );
+            int range = X_LEN;
             for (int x = 0; x < range; x++)
             {
                 double angle = (double)x * xtoa;
+                angle = angle % 360;
                 double radian = (angle / 180) * pi;
                 if ((angle >= 0) && (angle < 60))
                 {
@@ -238,10 +240,11 @@ namespace DrawLine2005
          * */
         private void Calculate5SvpwmWithOneHigh(float[] u, float[] v, float[] w, float[] com)
         {
-            int range = GetDrawLengthRange(X_LEN);
+            int range = X_LEN;
             for (int x = 0; x < range; x++)
             {
                 double angle = (double)x * xtoa;
+                angle = angle % 360;
                 double radian = (angle / 180) * pi;
                 if ((angle >= 0) && (angle < 60))
                 {
@@ -294,10 +297,11 @@ namespace DrawLine2005
          * */
         private void Calculate7Svpwm(float[] u, float[] v, float[] w, float[] com)
         {
-            int range = GetDrawLengthRange(X_LEN);
+            int range = X_LEN;
             for (int x = 0; x < range; x++)
             {
                 double angle = (double)x * xtoa;
+                angle = angle % 360;
                 double radian = (angle / 180) * pi;
                 if ((angle >= 0) && (angle < 60))
                 {

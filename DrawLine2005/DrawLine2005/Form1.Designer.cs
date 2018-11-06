@@ -53,7 +53,7 @@ namespace DrawLine2005
             this.pictureBox1.Location = new System.Drawing.Point(4, 66);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(720, 424);
+            this.pictureBox1.Size = new System.Drawing.Size(1140, 424);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -122,7 +122,7 @@ namespace DrawLine2005
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightBlue;
-            this.ClientSize = new System.Drawing.Size(737, 562);
+            this.ClientSize = new System.Drawing.Size(1166, 562);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -148,15 +148,16 @@ namespace DrawLine2005
         private Button button3;
 
         //static DATA.
+        static int CIRCLE = 360;
         static int BUF_LEN = 720;
         float[] DC_U = new float[BUF_LEN];        //Duty Cycle of U phase.
         float[] DC_V = new float[BUF_LEN];        //Duty Cycle of V phase.
         float[] DC_W = new float[BUF_LEN];        //Duty Cycle of W phase.
         float[] DC_COM = new float[BUF_LEN];      //Duty Cycle of U+V+W phase.
         //variable 
-        int X_LEN = 360;
-        int Y_LEN = 360;
-        double Ub = 360;
+        int X_LEN = CIRCLE;
+        int Y_LEN = CIRCLE;
+        double Ub = CIRCLE;
         double xtoa = 0;
         double mr = 0.9;                          //modulation radio.
         double pi = 0;
