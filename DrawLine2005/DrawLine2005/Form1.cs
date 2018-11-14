@@ -133,7 +133,7 @@ namespace DrawLine2005
                 grp.DrawLine(new Pen(Color.Red, 2), new Point(x, Y_LEN - (int)DC_U[k]), new Point(x + 1, Y_LEN - (int)DC_U[k + 1]));
                 grp.DrawLine(new Pen(Color.Blue, 2), new Point(x, Y_LEN - (int)DC_V[k]), new Point(x + 1, Y_LEN - (int)DC_V[k + 1]));
                 grp.DrawLine(new Pen(Color.Green, 2), new Point(x, Y_LEN - (int)DC_W[k]), new Point(x + 1, Y_LEN - (int)DC_W[k + 1]));
-                //grp.DrawLine(new Pen(Color.LightPink, 2), new Point(x, Y_LEN - (int)DC_COM[k]), new Point(x + 1, Y_LEN - (int)DC_COM[k + 1]));
+                grp.DrawLine(new Pen(Color.LightPink, 2), new Point(x, Y_LEN - (int)DC_COM[k]), new Point(x + 1, Y_LEN - (int)DC_COM[k + 1]));
             }
             pictureBox1.Image = bmp;
         }
@@ -344,6 +344,25 @@ namespace DrawLine2005
             }//for calculate.
         }
 
+        private void Calculate3PhaseSum(float[] u, float[] v, float[] w, float[] com)
+        {
+            int range = X_LEN;
+            for (int x = 0; x < range; x++)
+            {
+                double angle = (double)x * xtoa;
+                angle = angle % 360;
+                double radian = (angle / 180) * pi;
+                if ((angle >= 0) && (angle < 360))
+                {
+                    u[x] = (float)(Ub * (mr * Math.Cos(radian))/2 + Ub / 2);
+                    v[x] = (float)(Ub * (mr * Math.Cos(radian - pi * 2 / 3)) / 2 + Ub / 2);
+                    w[x] = (float)(Ub * (mr * Math.Cos(radian + pi * 2 / 3)) / 2 + Ub / 2);
+                }
+                
+                com[x] = (u[x] + v[x] + w[x]) / 3;
+            }//for calculate.
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             ClearCalculatedData();
@@ -373,6 +392,13 @@ namespace DrawLine2005
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             GetModulationRadio();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ClearCalculatedData();
+            Calculate3PhaseSum(DC_U, DC_V, DC_W, DC_COM);
+            DrawPictureDataLines(grp);
         }
     }
 }
