@@ -151,6 +151,8 @@ namespace Kalman2005
         private Label label1;
         private TextBox textBox1;
         private Button button1;
+        Panel panelPic = new Panel();
+        StringFormat drawFormat = new StringFormat();
         //private Label xLabel[12];
 
         kalmanType kal = new kalmanType();

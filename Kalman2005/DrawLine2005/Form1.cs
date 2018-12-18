@@ -45,6 +45,7 @@ namespace Kalman2005
             bmp = new Bitmap(X_LEN, Y_LEN);
             grp = Graphics.FromImage(bmp);
             DrawPictureFrameLines(grp);
+            DrawYLine(/*Panel pan*/ panelPic, /*float maxY*/ Y_LEN, /*int len*/ 10);
             pictureBox1.Image = bmp;
         }
 
@@ -114,6 +115,34 @@ namespace Kalman2005
             }
             pictureBox1.Image = bmp;
         }
+
+        /// <summary>
+        /// 画出Y轴上的分值线，从零开始
+        /// </summary>
+        /// <param name="pan"></param>
+        /// <param name="maxY"></param>
+        /// <param name="len"></param>
+        #region   画出Y轴上的分值线，从零开始
+        public void DrawYLine(Panel pan, float maxY, int len)
+        {
+            float move = 50f;
+            float LenX = pan.Width - 2 * move;
+            float LenY = pan.Height - 2 * move;
+            //Graphics g = pan.CreateGraphics();
+            for (int i = 0; i <= len; i++)    //len等份Y轴
+            {
+                PointF px1 = new PointF(move, LenY * i / len + move);
+                PointF px2 = new PointF(move + 50, LenY * i / len + move);
+                string sx = (10 * (len-i)).ToString();
+                grp.DrawLine(new Pen(Brushes.Black, 2), px1, px2);
+                //StringFormat drawFormat = new StringFormat();
+
+                //drawFormat.Alignment = StringAlignment.Far;
+                //drawFormat.LineAlignment = StringAlignment.Center;
+                grp.DrawString(sx, new Font("Consolas", 8f), Brushes.Black, new PointF(move / 2f, 30 * i ), drawFormat);
+            }
+        }
+        #endregion
 
         private void DrawPictureDataLines(Graphics grp)
         {
