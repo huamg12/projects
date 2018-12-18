@@ -41,7 +41,7 @@ namespace Kalman2005
         }
         #endregion //InitPictureParamters
 
-        //=================================================================//background.
+        #region InitializeDraw
         private void InitializeDraw()
         {
             bmp = new Bitmap(X_LEN, Y_LEN);
@@ -49,13 +49,15 @@ namespace Kalman2005
             DrawPictureFrameLines(grp);
             pictureBox1.Image = bmp;
         }
+        #endregion //InitializeDraw
+
+        #region DrawGradLines
 
         private void DrawGrayFromStartToTargetPoints(int px1, int py1, int px2, int py2, int width)
         {
             grp.DrawLine(new Pen(Color.Gray, width), new Point(px1, py1), new Point(px2, py2));
         }
 
-        #region DrawGradLines
         private void DrawPictureFrameLines(Graphics grp)
         {
             //Top board line.
