@@ -18,6 +18,7 @@ namespace Kalman2005
             InitializeDraw();
         }
 
+        #region InitPictureParamters
         private void InitializeParameter()
         {
             //pi = Math.PI;
@@ -38,6 +39,7 @@ namespace Kalman2005
             Ub = (double)Y_LEN;                 //Voltage base.
             xtoa = (double)(CIRCLE) / X_LEN;    //x to angle.       x/X_LEN = i/360.   i = x * (360/X_LEN)
         }
+        #endregion //InitPictureParamters
 
         //=================================================================//background.
         private void InitializeDraw()
@@ -45,7 +47,6 @@ namespace Kalman2005
             bmp = new Bitmap(X_LEN, Y_LEN);
             grp = Graphics.FromImage(bmp);
             DrawPictureFrameLines(grp);
-            DrawYLine(/*Panel pan*/ panelPic, /*float maxY*/ Y_LEN, /*int len*/ 10);
             pictureBox1.Image = bmp;
         }
 
@@ -54,6 +55,7 @@ namespace Kalman2005
             grp.DrawLine(new Pen(Color.Gray, width), new Point(px1, py1), new Point(px2, py2));
         }
 
+        #region DrawGradLines
         private void DrawPictureFrameLines(Graphics grp)
         {
             //Top board line.
@@ -113,37 +115,55 @@ namespace Kalman2005
                     }
                 }
             }
+            DrawYLine(/*Panel pan*/ panelPic, /*float maxY*/ Y_LEN, /*int lines*/ lines);
+            DrawXColumns(/*Panel pan*/ panelPic, /*float maxX*/ X_LEN, /*int columns*/ columns);
             pictureBox1.Image = bmp;
         }
+        #endregion //DrawGradLines
 
+        #region DarwYlinesFromZero
         /// <summary>
-        /// 画出Y轴上的分值线，从零开始
+        /// Darw Y lines from zero.
         /// </summary>
         /// <param name="pan"></param>
         /// <param name="maxY"></param>
-        /// <param name="len"></param>
-        #region   画出Y轴上的分值线，从零开始
-        public void DrawYLine(Panel pan, float maxY, int len)
+        /// <param name="lines"></param>
+        public void DrawYLine(Panel pan, float maxY, int lines)
         {
-            float move = 50f;
-            float LenX = pan.Width - 2 * move;
-            float LenY = pan.Height - 2 * move;
-            //Graphics g = pan.CreateGraphics();
-            for (int i = 0; i <= len; i++)    //len等份Y轴
+            float LenY = maxY;
+            float grad = (LenY / lines);
+            for (int i = 0; i <= lines; i++) //lines to divide Y axis.
             {
-                PointF px1 = new PointF(move, LenY * i / len + move);
-                PointF px2 = new PointF(move + 50, LenY * i / len + move);
-                string sx = (10 * (len-i)).ToString();
-                grp.DrawLine(new Pen(Brushes.Black, 2), px1, px2);
-                //StringFormat drawFormat = new StringFormat();
-
-                //drawFormat.Alignment = StringAlignment.Far;
-                //drawFormat.LineAlignment = StringAlignment.Center;
-                grp.DrawString(sx, new Font("Consolas", 8f), Brushes.Black, new PointF(move / 2f, 30 * i ), drawFormat);
+                float yScale = (LenY - grad * i);
+                grp.DrawLine(new Pen(Brushes.Black, 2), new PointF(0, yScale), new PointF(5, yScale));
+                string yLabel = ((int)(grad * i)).ToString();
+                grp.DrawString(yLabel, new Font("Consolas", 8F), Brushes.Black, new PointF(0, yScale));
             }
         }
-        #endregion
+        #endregion //DarwYlinesFromZero
 
+        #region DarwXcolumnsFromZero
+        /// <summary>
+        /// Darw X columns from zero.
+        /// </summary>
+        /// <param name="pan"></param>
+        /// <param name="maxX"></param>
+        /// <param name="lines"></param>
+        public void DrawXColumns(Panel pan, float maxX, int columns)
+        {
+            float LenX = maxX;
+            float gap = (LenX / columns);
+            for (int i = 0; i <= columns; i++) //columns to divide X axis.
+            {
+                float xScale = (gap * i);
+                grp.DrawLine(new Pen(Brushes.Black, 2), new PointF(xScale, Y_LEN - 0), new PointF(xScale, Y_LEN - 5));
+                string xLabel = ((int)(gap * i)).ToString();
+                grp.DrawString(xLabel, new Font("Consolas", 8F), Brushes.Black, new PointF(xScale, Y_LEN - 15));
+            }
+        }
+        #endregion //DarwXcolumnsFromZero
+
+        #region DrawDataLines
         private void DrawPictureDataLines(Graphics grp)
         {
             for (int x = 0; x < X_LEN; x++)
@@ -160,7 +180,9 @@ namespace Kalman2005
             }
             pictureBox1.Image = bmp;
         }
+        #endregion // DrawDataLines
 
+        #region ClearData
         private void ClearCalculatedData()
         {
             for (int i = 0; i < X_LEN; i++)
@@ -172,9 +194,9 @@ namespace Kalman2005
             }
             InitializeDraw();
         }
+        #endregion //ClearData
 
-        //=================================================================//
-
+        #region SVPWM_MOD
         private void GetModulationRadio()
         {
             double modulation = double.Parse(textBox1.Text);
@@ -190,7 +212,9 @@ namespace Kalman2005
                 textBox1.Text = "0.0";
             }
         }
+        #endregion //SVPWM_MOD
 
+        #region KalmanFilterAlgorithm
         private void Init_k(double Q, double R)
         {
             kal.X = 22;    //测量的初始值
@@ -267,8 +291,9 @@ namespace Kalman2005
                 kmK[x] = (zk - 50);
             }
         }
+        #endregion //KalmanFilterAlgorithm
 
-        //====================================================================//events.
+        #region Events
         private void button1_Click(object sender, EventArgs e)
         {
             ClearCalculatedData();
@@ -285,6 +310,6 @@ namespace Kalman2005
         {
             GetModulationRadio();
         }
-
+        #endregion //Events
     }
 }
