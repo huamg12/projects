@@ -1,6 +1,6 @@
 ﻿namespace SerialPortConnection
 {
-    partial class Form1
+    partial class SerialPortTool
     {
         /// <summary>
         /// Required designer variable.
@@ -523,7 +523,7 @@
             this.tsParity.Size = new System.Drawing.Size(112, 20);
             this.tsParity.Text = "停止位:未指定|";
             // 
-            // Form1
+            // SerialPortTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -534,7 +534,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "Form1";
+            this.Name = "SerialPortTool";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "串口通信助手";
             this.Load += new System.EventHandler(this.Form1_Load);

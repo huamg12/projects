@@ -14,7 +14,7 @@ namespace SerialPort2005
     {
         #region SerialPortDefine
         //serial port
-        SerialPort comm01 = null;
+        SerialPort comm01 = new SerialPort();
         bool isOpen = false;
         bool isSetProperty = false;
         bool isHex = false;
@@ -37,11 +37,6 @@ namespace SerialPort2005
 
         private void InitializeSerialPort()
         {
-            for (int i = 0; i < comNum; i++)
-            {
-                cbxCOMPort.Items.Add("COM"+(i+1)).ToString();
-            }
-            cbxCOMPort.SelectedIndex = 0;
             //baudrate
             cbxBaudRate.Items.Add("1200");
             cbxBaudRate.Items.Add("2400");
@@ -73,6 +68,19 @@ namespace SerialPort2005
             cbxParity.SelectedIndex = 0;
             //char or hex
             rbnChar.Checked = true;
+
+            //check there is COMM or not.
+            string[] nameArray = SerialPort.GetPortNames();
+            if (nameArray == null)
+            {
+                MessageBox.Show("No comm port!", "Error!");
+                return;
+            }
+            foreach (string name in nameArray)
+            {
+                cbxCOMPort.Items.Add(name);
+            }
+            cbxCOMPort.SelectedIndex = 0;
         }
 
         private bool CheckPortSetting()
@@ -93,12 +101,11 @@ namespace SerialPort2005
 
         private void SetPortProperty()
         {
-            //comm01 = new SerialPort();
-            comm01.PortName = cbxCOMPort.Text.Trim();
-            comm01.BaudRate = Convert.ToInt32(cbxBaudRate.Text.Trim());
-            comm01.DataBits = Convert.ToInt16(cbxDataBits.Text.Trim());
+            comm01.PortName = cbxCOMPort.SelectedItem.ToString();
+            comm01.BaudRate = Convert.ToInt32(cbxBaudRate.Text);
+            comm01.DataBits = Convert.ToInt16(cbxDataBits.Text);
 
-            float fStopBit = Convert.ToSingle(cbxStopBits.Text.Trim());
+            float fStopBit = Convert.ToSingle(cbxStopBits.Text);
             if (fStopBit == 0)
             {
                 comm01.StopBits = StopBits.None;
@@ -147,10 +154,12 @@ namespace SerialPort2005
             }
 
             //data reveived event.
+            Control.CheckForIllegalCrossThreadCalls = false;
             comm01.DataReceived += new SerialDataReceivedEventHandler(comm01_DataReceived);
-            comm01.ReadTimeout = -1;
-            comm01.RtsEnable = true;
+
             comm01.DtrEnable = true;
+            comm01.RtsEnable = true;
+            comm01.ReadTimeout = 2000;
             comm01.Close();
         }
 
@@ -511,7 +520,6 @@ namespace SerialPort2005
 
         private void btnOpenCOM_Click(object sender, EventArgs e)
         {
-            comm01 = new SerialPort();
             if (isOpen == false)
             {
                 if (CheckPortSetting() == false)
@@ -577,7 +585,7 @@ namespace SerialPort2005
 
         private void comm01_DataReceived (object sender, SerialDataReceivedEventArgs e)
         {
-            System.Threading.Thread.Sleep(100); //delay 100ms.
+            //System.Threading.Thread.Sleep(100); //delay 100ms.
             this.Invoke((EventHandler)(delegate
             {
                 if (isHex == false)
