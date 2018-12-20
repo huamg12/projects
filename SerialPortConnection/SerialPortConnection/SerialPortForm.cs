@@ -18,6 +18,8 @@ namespace SerialPortConnection
 
         SerialPort comPort = new SerialPort();
         //comPort.ReceivedBytesThreshold = 1;//只要有1个字符送达端口时便触发DataReceived事件 
+        //private System.Timers.Timer timDataSample = new System.Timers.Timer(1000);
+
         string serialDataBuffText = "Sample special variable in serial data buff.";
         int serialDataBuffDeep = 5;
         int serialDataBuffIndex = 0;
@@ -358,7 +360,7 @@ namespace SerialPortConnection
             }
         }
 
-        private void btnOpnClsPort_Click(object sender, EventArgs e)
+        private void btnOpenCloseCommPort_Click(object sender, EventArgs e)
         {
             serialSampleIndex = 0;
             //serialPort1.IsOpen
@@ -430,7 +432,7 @@ namespace SerialPortConnection
 
                     comPort.Open();     //打开串口
                     btnSwitch.Text = "Close";
-                    timSample.Enabled = true;
+                    timSend.Enabled = true;
                 }
                 catch (System.Exception ex)
                 {
@@ -457,13 +459,13 @@ namespace SerialPortConnection
                 comPort.Close();                 //关闭串口
                 btnSwitch.Text = "Open";
                 timSend.Enabled = false;         //关闭计时器
-                timSample.Enabled = false;
             }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
             txtReceive.Text = "";       //清空文本
+            ClearCalculatedData();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -556,19 +558,25 @@ namespace SerialPortConnection
             Profile.SaveProfile();
         }
 
-        //定时器
+        //timer: when checked, used for send period; not checked, used for sample interval.
         private void tmSend_Tick(object sender, EventArgs e)
         {
             //转换时间间隔
             string strSecond = txtSecond.Text;
             try
             {
-                int isecond = int.Parse(strSecond) * 1000;//Interval以微秒为单位
-                timSend.Interval = isecond;
+                int iMsecond = int.Parse(strSecond);//Interval unit is ms.
+                timSend.Interval = iMsecond;
                 if (timSend.Enabled == true)
                 {
-                    //btnSend.PerformClick();
-                    vFindWordInString();
+                    if (cbTimeSend.Checked)
+                    {
+                        btnSend.PerformClick();
+                    }
+                    else //not checked, used for sample data.
+                    {
+                        vFindWordInString();
+                    }
                 }
             }
             catch (System.Exception)
@@ -620,18 +628,23 @@ namespace SerialPortConnection
             int lenSam = tbxSample.Text.Length;
             int idend = serialDataBuffText.IndexOf(tbxSampUnit.Text);
             int lenUnt = tbxSampUnit.Text.Length;
+            string sampleValue = "0";
             if ((idend > serialDataBuffDeep) && (idend > index))
             {
-                string sampleValue = serialDataBuffText.Substring(index + lenSam + 1, idend - index - lenSam -2); //space.
-                if (serialSampleIndex < CIRCLE)
-                {
-                    DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue);
-                    serialSampleIndex++;
-                }
-                else
-                {
-                    serialSampleIndex = CIRCLE;
-                }
+                sampleValue = serialDataBuffText.Substring(index + lenSam + 1, idend - index - lenSam -2); //space.
+            }
+            if (serialSampleIndex == 0)
+            {
+                ClearCalculatedData();
+            }
+            if (serialSampleIndex < CIRCLE)
+            {
+                DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue) + Y_LEN / 2;
+                serialSampleIndex++;
+            }
+            if (serialSampleIndex >= CIRCLE-1)
+            {
+                serialSampleIndex = 0;
             }
         }        
 
@@ -685,7 +698,7 @@ namespace SerialPortConnection
             {
                 float yScale = (LenY - grad * i);
                 grp.DrawLine(new Pen(Brushes.Black, 2), new PointF(0, yScale), new PointF(5, yScale));
-                string yLabel = ((int)(grad * i)).ToString();
+                string yLabel = ((int)(grad * i - LenY/2)).ToString();
                 grp.DrawString(yLabel, new Font("Consolas", 8F), Brushes.Black, new PointF(0, yScale));
             }
         }
@@ -806,9 +819,10 @@ namespace SerialPortConnection
         #region ClearData
         private void ClearCalculatedData()
         {
+            serialSampleIndex = 0;
             for (int i = 0; i < X_LEN; i++)
             {
-                DC_U[i] = 0;
+                DC_U[i] = Y_LEN / 2;
                 DC_V[i] = 0;
                 DC_W[i] = 0;
                 DC_COM[i] = 0;
@@ -903,5 +917,11 @@ namespace SerialPortConnection
         }
 
         #endregion DrawPictureProgram
+
+        private void btnDrawPic_Click(object sender, EventArgs e)
+        {
+            InitializeDraw();
+            DrawPictureDataLines(grp);
+        }
     }
 }

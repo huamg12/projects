@@ -31,10 +31,9 @@
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.tbxSampUnit = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbxSample = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tbxSampTime = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.cbParity = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
@@ -58,7 +57,6 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.txtSend = new System.Windows.Forms.TextBox();
             this.txtSecond = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.cbTimeSend = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtReceive = new System.Windows.Forms.RichTextBox();
@@ -75,10 +73,9 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tabDraw = new System.Windows.Forms.TabPage();
+            this.btnDrawPic = new System.Windows.Forms.Button();
             this.btnDraw = new System.Windows.Forms.Button();
             this.picBoxDraw = new System.Windows.Forms.PictureBox();
-            this.timSample = new System.Windows.Forms.Timer(this.components);
-            this.tbxSampUnit = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -126,14 +123,22 @@
             this.groupBox5.Controls.Add(this.tbxSampUnit);
             this.groupBox5.Controls.Add(this.label4);
             this.groupBox5.Controls.Add(this.tbxSample);
-            this.groupBox5.Controls.Add(this.label9);
-            this.groupBox5.Controls.Add(this.tbxSampTime);
             this.groupBox5.Location = new System.Drawing.Point(12, 309);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(170, 93);
+            this.groupBox5.Size = new System.Drawing.Size(170, 87);
             this.groupBox5.TabIndex = 33;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "sample";
+            // 
+            // tbxSampUnit
+            // 
+            this.tbxSampUnit.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbxSampUnit.Location = new System.Drawing.Point(100, 24);
+            this.tbxSampUnit.Margin = new System.Windows.Forms.Padding(4);
+            this.tbxSampUnit.Name = "tbxSampUnit";
+            this.tbxSampUnit.Size = new System.Drawing.Size(65, 25);
+            this.tbxSampUnit.TabIndex = 19;
+            this.tbxSampUnit.Text = "mrad/s";
             // 
             // label4
             // 
@@ -142,42 +147,20 @@
             this.label4.Location = new System.Drawing.Point(1, 28);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(64, 17);
+            this.label4.Size = new System.Drawing.Size(32, 17);
             this.label4.TabIndex = 17;
-            this.label4.Text = "Sample:";
+            this.label4.Text = "D1:";
             // 
             // tbxSample
             // 
             this.tbxSample.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxSample.Location = new System.Drawing.Point(73, 24);
+            this.tbxSample.Location = new System.Drawing.Point(34, 24);
             this.tbxSample.Margin = new System.Windows.Forms.Padding(4);
             this.tbxSample.Name = "tbxSample";
-            this.tbxSample.Size = new System.Drawing.Size(47, 25);
+            this.tbxSample.Size = new System.Drawing.Size(62, 25);
             this.tbxSample.TabIndex = 18;
             this.tbxSample.Text = "speed";
             this.tbxSample.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSecond_KeyPress);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(1, 62);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(64, 17);
-            this.label9.TabIndex = 17;
-            this.label9.Text = "Time-ms";
-            // 
-            // tbxSampTime
-            // 
-            this.tbxSampTime.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxSampTime.Location = new System.Drawing.Point(73, 58);
-            this.tbxSampTime.Margin = new System.Windows.Forms.Padding(4);
-            this.tbxSampTime.Name = "tbxSampTime";
-            this.tbxSampTime.Size = new System.Drawing.Size(95, 25);
-            this.tbxSampTime.TabIndex = 18;
-            this.tbxSampTime.Text = "1000";
-            this.tbxSampTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSecond_KeyPress);
             // 
             // label8
             // 
@@ -406,7 +389,7 @@
             this.btnSwitch.TabIndex = 9;
             this.btnSwitch.Text = "Open";
             this.btnSwitch.UseVisualStyleBackColor = true;
-            this.btnSwitch.Click += new System.EventHandler(this.btnOpnClsPort_Click);
+            this.btnSwitch.Click += new System.EventHandler(this.btnOpenCloseCommPort_Click);
             // 
             // cbSerial
             // 
@@ -455,23 +438,13 @@
             // 
             // txtSecond
             // 
-            this.txtSecond.Location = new System.Drawing.Point(220, 21);
+            this.txtSecond.Location = new System.Drawing.Point(180, 21);
             this.txtSecond.Margin = new System.Windows.Forms.Padding(4);
             this.txtSecond.Name = "txtSecond";
             this.txtSecond.Size = new System.Drawing.Size(57, 22);
             this.txtSecond.TabIndex = 18;
-            this.txtSecond.Text = "1000";
+            this.txtSecond.Text = "100";
             this.txtSecond.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSecond_KeyPress);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(133, 24);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 17);
-            this.label2.TabIndex = 17;
-            this.label2.Text = "Interval(/ms):";
             // 
             // cbTimeSend
             // 
@@ -479,9 +452,9 @@
             this.cbTimeSend.Location = new System.Drawing.Point(8, 22);
             this.cbTimeSend.Margin = new System.Windows.Forms.Padding(4);
             this.cbTimeSend.Name = "cbTimeSend";
-            this.cbTimeSend.Size = new System.Drawing.Size(108, 21);
+            this.cbTimeSend.Size = new System.Drawing.Size(167, 21);
             this.cbTimeSend.TabIndex = 16;
-            this.cbTimeSend.Text = "Send Period";
+            this.cbTimeSend.Text = "Smp | Snd Period(ms)";
             this.cbTimeSend.UseVisualStyleBackColor = true;
             // 
             // groupBox2
@@ -592,7 +565,6 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.cbTimeSend);
-            this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.btnSend);
             this.groupBox4.Controls.Add(this.txtSecond);
             this.groupBox4.Location = new System.Drawing.Point(0, 90);
@@ -603,6 +575,7 @@
             // 
             // tabDraw
             // 
+            this.tabDraw.Controls.Add(this.btnDrawPic);
             this.tabDraw.Controls.Add(this.btnDraw);
             this.tabDraw.Controls.Add(this.picBoxDraw);
             this.tabDraw.Location = new System.Drawing.Point(4, 25);
@@ -613,13 +586,23 @@
             this.tabDraw.Text = "Draw";
             this.tabDraw.UseVisualStyleBackColor = true;
             // 
+            // btnDrawPic
+            // 
+            this.btnDrawPic.Location = new System.Drawing.Point(567, 445);
+            this.btnDrawPic.Name = "btnDrawPic";
+            this.btnDrawPic.Size = new System.Drawing.Size(85, 33);
+            this.btnDrawPic.TabIndex = 2;
+            this.btnDrawPic.Text = "Draw";
+            this.btnDrawPic.UseVisualStyleBackColor = true;
+            this.btnDrawPic.Click += new System.EventHandler(this.btnDrawPic_Click);
+            // 
             // btnDraw
             // 
             this.btnDraw.Location = new System.Drawing.Point(658, 444);
             this.btnDraw.Name = "btnDraw";
             this.btnDraw.Size = new System.Drawing.Size(85, 33);
             this.btnDraw.TabIndex = 1;
-            this.btnDraw.Text = "Draw";
+            this.btnDraw.Text = "Kalman";
             this.btnDraw.UseVisualStyleBackColor = true;
             this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
             // 
@@ -630,20 +613,6 @@
             this.picBoxDraw.Size = new System.Drawing.Size(742, 434);
             this.picBoxDraw.TabIndex = 0;
             this.picBoxDraw.TabStop = false;
-            // 
-            // timSample
-            // 
-            this.timSample.Tick += new System.EventHandler(this.timSample_Tick);
-            // 
-            // tbxSampUnit
-            // 
-            this.tbxSampUnit.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxSampUnit.Location = new System.Drawing.Point(121, 24);
-            this.tbxSampUnit.Margin = new System.Windows.Forms.Padding(4);
-            this.tbxSampUnit.Name = "tbxSampUnit";
-            this.tbxSampUnit.Size = new System.Drawing.Size(47, 25);
-            this.tbxSampUnit.TabIndex = 19;
-            this.tbxSampUnit.Text = "mrad/s";
             // 
             // SerialPortTool
             // 
@@ -698,7 +667,6 @@
         private System.Windows.Forms.RadioButton rdSendStr;
         //private System.Windows.Forms.RadioButton rdse;
         private System.Windows.Forms.TextBox txtSecond;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox cbTimeSend;
         private System.Windows.Forms.TextBox txtSend;
         private System.Windows.Forms.Button btnSend;
@@ -730,13 +698,13 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbxSample;
-        private System.Windows.Forms.Timer timSample;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbxSampTime;
         private System.Windows.Forms.PictureBox picBoxDraw;
         private System.Windows.Forms.Button btnDraw;
         private System.Windows.Forms.TextBox tbxSampUnit;
+        private System.Windows.Forms.Button btnDrawPic;
+
+        
     }
 }
 
