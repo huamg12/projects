@@ -469,9 +469,9 @@
             this.label2.Location = new System.Drawing.Point(133, 24);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 17);
+            this.label2.Size = new System.Drawing.Size(90, 17);
             this.label2.TabIndex = 17;
-            this.label2.Text = "Interval(/s):";
+            this.label2.Text = "Interval(/ms):";
             // 
             // cbTimeSend
             // 

@@ -567,7 +567,8 @@ namespace SerialPortConnection
                 timSend.Interval = isecond;
                 if (timSend.Enabled == true)
                 {
-                    btnSend.PerformClick();
+                    //btnSend.PerformClick();
+                    vFindWordInString();
                 }
             }
             catch (System.Exception)
@@ -595,31 +596,33 @@ namespace SerialPortConnection
 
         private void timSample_Tick(object sender, EventArgs e)
         {
-            string strSampTime = tbxSampTime.Text;
-            try
-            {
-                int mSecond = int.Parse(strSampTime) * 1000;//*1000ms.
-                timSample.Interval = mSecond;
-                if (timSample.Enabled == true)
-                {
-                    //btnSend.PerformClick();
-                    vFindWordInString();
-                }
-            }
-            catch (System.Exception)
-            {
-                timSample.Enabled = false;
-                MessageBox.Show("Error sample time.", "Error!");
-            }
+            //string strSampTime = tbxSampTime.Text;
+            //try
+            //{
+            //    int mSecond = int.Parse(strSampTime) * 1000;//*1000ms.
+            //    timSample.Interval = mSecond;
+            //    if (timSample.Enabled == true)
+            //    {
+            //        //btnSend.PerformClick();
+            //        vFindWordInString();
+            //    }
+            //}
+            //catch (System.Exception)
+            //{
+            //    timSample.Enabled = false;
+            //    MessageBox.Show("Error sample time.", "Error!");
+            //}
         }
 
         private void vFindWordInString()
         {
             int index = serialDataBuffText.IndexOf(tbxSample.Text);
+            int lenSam = tbxSample.Text.Length;
             int idend = serialDataBuffText.IndexOf(tbxSampUnit.Text);
+            int lenUnt = tbxSampUnit.Text.Length;
             if ((idend > serialDataBuffDeep) && (idend > index))
             {
-                string sampleValue = serialDataBuffText.Substring(index + 1, idend - index);
+                string sampleValue = serialDataBuffText.Substring(index + lenSam + 1, idend - index - lenSam -2); //space.
                 if (serialSampleIndex < CIRCLE)
                 {
                     DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue);
