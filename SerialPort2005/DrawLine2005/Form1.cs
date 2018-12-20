@@ -614,5 +614,10 @@ namespace SerialPort2005
         }
 
         #endregion //SerialPortEvents
+
+        private void SerialPortComm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            comm01.Close();
+        }
     }
 }

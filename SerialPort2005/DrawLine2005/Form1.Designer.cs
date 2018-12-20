@@ -368,6 +368,7 @@ namespace SerialPort2005
             this.Name = "SerialPortComm";
             this.Text = "SerialPort";
             this.Load += new System.EventHandler(this.SerialPortComm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SerialPortComm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
