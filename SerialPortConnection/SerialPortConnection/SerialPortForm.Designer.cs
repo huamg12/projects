@@ -109,11 +109,12 @@
             this.groupBox1.Controls.Add(this.btnSwitch);
             this.groupBox1.Controls.Add(this.cbSerial);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(7, 7);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(193, 514);
+            this.groupBox1.Size = new System.Drawing.Size(193, 571);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Setting:";
@@ -492,10 +493,10 @@
             this.tsDataBits,
             this.tsStopBits,
             this.tsParity});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 546);
+            this.statusStrip1.Location = new System.Drawing.Point(193, 546);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(999, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(760, 25);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -533,10 +534,11 @@
             // 
             this.tabSerialPort.Controls.Add(this.tabMonitor);
             this.tabSerialPort.Controls.Add(this.tabDraw);
-            this.tabSerialPort.Location = new System.Drawing.Point(213, 12);
+            this.tabSerialPort.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabSerialPort.Location = new System.Drawing.Point(193, 0);
             this.tabSerialPort.Name = "tabSerialPort";
             this.tabSerialPort.SelectedIndex = 0;
-            this.tabSerialPort.Size = new System.Drawing.Size(759, 513);
+            this.tabSerialPort.Size = new System.Drawing.Size(760, 546);
             this.tabSerialPort.TabIndex = 1;
             // 
             // tabMonitor
@@ -546,7 +548,7 @@
             this.tabMonitor.Location = new System.Drawing.Point(4, 25);
             this.tabMonitor.Name = "tabMonitor";
             this.tabMonitor.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMonitor.Size = new System.Drawing.Size(751, 484);
+            this.tabMonitor.Size = new System.Drawing.Size(752, 517);
             this.tabMonitor.TabIndex = 0;
             this.tabMonitor.Text = "Monitor";
             this.tabMonitor.UseVisualStyleBackColor = true;
@@ -581,7 +583,7 @@
             this.tabDraw.Location = new System.Drawing.Point(4, 25);
             this.tabDraw.Name = "tabDraw";
             this.tabDraw.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDraw.Size = new System.Drawing.Size(751, 484);
+            this.tabDraw.Size = new System.Drawing.Size(752, 517);
             this.tabDraw.TabIndex = 1;
             this.tabDraw.Text = "Draw";
             this.tabDraw.UseVisualStyleBackColor = true;
@@ -616,10 +618,10 @@
             // 
             // SerialPortTool
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.LightBlue;
-            this.ClientSize = new System.Drawing.Size(999, 571);
+            this.ClientSize = new System.Drawing.Size(953, 571);
             this.Controls.Add(this.tabSerialPort);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox1);
