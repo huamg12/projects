@@ -443,7 +443,7 @@
             this.txtSecond.Name = "txtSecond";
             this.txtSecond.Size = new System.Drawing.Size(57, 22);
             this.txtSecond.TabIndex = 18;
-            this.txtSecond.Text = "200";
+            this.txtSecond.Text = "1000";
             this.txtSecond.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSecond_KeyPress);
             // 
             // cbTimeSend

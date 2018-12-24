@@ -9,11 +9,20 @@ using System.Text;
 using System.Windows.Forms;
 using INIFILE;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace SerialPortConnection
 {
     public partial class SerialPortTool : Form
     {
+        #region TimersDefine
+
+        System.Threading.Timer thTimSample;
+        int timeTick = 0;
+        int timeTickPre = 0;
+
+        #endregion TimersDefine
+
         #region SerialPortMembers
 
         SerialPort comPort = new SerialPort();
@@ -51,6 +60,17 @@ namespace SerialPortConnection
         StringFormat drawFormat = new StringFormat();
 
         #endregion DrawPictureMembers
+
+        #region TimersTick
+        private void TimerTick(object o)
+        {
+            timeTick++;
+            if (timeTick > 100)
+            {
+                timeTick = 0;
+            }
+        }
+        #endregion TimersTick
 
         #region KalmanFilterDefine
 
@@ -121,7 +141,7 @@ namespace SerialPortConnection
             comPort.DtrEnable = true;
             comPort.RtsEnable = true;
             //read timeout 1000ms.
-            comPort.ReadTimeout = 1000;
+            comPort.ReadTimeout = -1;
 
             comPort.Close();
         }
@@ -220,6 +240,18 @@ namespace SerialPortConnection
 
         void commPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            if (timeTickPre != timeTick)
+            {
+                if (timeTick == 10)
+                {
+                    btnDrawPic.PerformClick();
+                }
+                timeTickPre = timeTick;
+            }
+            else
+            {
+                return;
+            }
             if (comPort.IsOpen)
             {
                 //time. //look at comments, not code self!
@@ -233,6 +265,7 @@ namespace SerialPortConnection
                 {
                     //txtReceive.Text += comPort.ReadLine() + "\r\n"; //注意：回车换行必须这样写，单独使用"\r"和"\n"都不会有效果
                     string newMsg = comPort.ReadLine() + "\r\n";
+                    //string newMsg = comPort.ReadLine();
                     serialDataLineText = comPort.ReadLine();
                     txtReceive.AppendText(newMsg);
                     txtReceive.ScrollToCaret();
@@ -247,6 +280,7 @@ namespace SerialPortConnection
                         serialDataBuffText = newMsg; //restart.
                         serialDataBuffIndex = 0;
                     }
+                    vAlterLineToValue();
                 }
                 else // HEX.
                 {
@@ -434,7 +468,9 @@ namespace SerialPortConnection
 
                     comPort.Open();     //打开串口
                     btnSwitch.Text = "Close";
-                    timSend.Enabled = true;
+                    //timSend.Enabled = true;
+                    int iMsecond = int.Parse(txtSecond.Text);
+                    thTimSample = new System.Threading.Timer(TimerTick, null, 20, iMsecond);
                 }
                 catch (System.Exception ex)
                 {
@@ -480,6 +516,7 @@ namespace SerialPortConnection
         {
             INIFILE.Profile.SaveProfile();
             comPort.Close();
+            //thTimSample.Dispose();
         }
 
         private void txtSend_KeyPress(object sender, KeyPressEventArgs e)
@@ -578,7 +615,7 @@ namespace SerialPortConnection
                     else //not checked, used for sample data.
                     {
                         //vFindWordInString();
-                        vAlterLineToValue();
+                        //vAlterLineToValue();
                     }
                 }
             }
@@ -657,12 +694,12 @@ namespace SerialPortConnection
             {
                 ClearCalculatedData();
             }
-            if (serialSampleIndex < CIRCLE)
+            if (serialSampleIndex < X_LEN)
             {
                 DC_U[serialSampleIndex] = Convert.ToDouble(serialDataLineText) + Y_LEN / 2;
                 serialSampleIndex++;
             }
-            if (serialSampleIndex >= CIRCLE - 1)
+            if (serialSampleIndex >= X_LEN - 1)
             {
                 serialSampleIndex = 0;
             }
