@@ -20,6 +20,7 @@ namespace SerialPortConnection
         //comPort.ReceivedBytesThreshold = 1;//只要有1个字符送达端口时便触发DataReceived事件 
         //private System.Timers.Timer timDataSample = new System.Timers.Timer(1000);
 
+        string serialDataLineText = "0";
         string serialDataBuffText = "Sample special variable in serial data buff.";
         int serialDataBuffDeep = 5;
         int serialDataBuffIndex = 0;
@@ -232,6 +233,7 @@ namespace SerialPortConnection
                 {
                     //txtReceive.Text += comPort.ReadLine() + "\r\n"; //注意：回车换行必须这样写，单独使用"\r"和"\n"都不会有效果
                     string newMsg = comPort.ReadLine() + "\r\n";
+                    serialDataLineText = comPort.ReadLine();
                     txtReceive.AppendText(newMsg);
                     txtReceive.ScrollToCaret();
                     //comPort.DiscardInBuffer();                    //清空SerialPort控件的Buffer 
@@ -575,7 +577,8 @@ namespace SerialPortConnection
                     }
                     else //not checked, used for sample data.
                     {
-                        vFindWordInString();
+                        //vFindWordInString();
+                        vAlterLineToValue();
                     }
                 }
             }
@@ -632,21 +635,38 @@ namespace SerialPortConnection
             if ((idend > serialDataBuffDeep) && (idend > index))
             {
                 sampleValue = serialDataBuffText.Substring(index + lenSam + 1, idend - index - lenSam -2); //space.
+                if (serialSampleIndex == 0)
+                {
+                    ClearCalculatedData();
+                }
+                if (serialSampleIndex < CIRCLE)
+                {
+                    DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue) + Y_LEN / 2;
+                    serialSampleIndex++;
+                }
+                if (serialSampleIndex >= CIRCLE - 1)
+                {
+                    serialSampleIndex = 0;
+                }
             }
+        }
+
+        private void vAlterLineToValue()
+        {
             if (serialSampleIndex == 0)
             {
                 ClearCalculatedData();
             }
             if (serialSampleIndex < CIRCLE)
             {
-                DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue) + Y_LEN / 2;
+                DC_U[serialSampleIndex] = Convert.ToDouble(serialDataLineText) + Y_LEN / 2;
                 serialSampleIndex++;
             }
-            if (serialSampleIndex >= CIRCLE-1)
+            if (serialSampleIndex >= CIRCLE - 1)
             {
                 serialSampleIndex = 0;
             }
-        }        
+        }
 
         #endregion SerialPortProgram
 
