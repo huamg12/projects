@@ -15,6 +15,19 @@ namespace SerialPortConnection
 {
     public partial class SerialPortTool : Form
     {
+        //initialize.
+        #region WindowFormInitialize
+
+        public SerialPortTool()
+        {
+            InitializeComponent();
+            InitializeParameter();
+            InitializeDraw();
+        }
+
+        #endregion WindowFormInitialize
+
+        //defines.
         #region TimersDefine
 
         System.Threading.Timer thTimSample;
@@ -61,17 +74,6 @@ namespace SerialPortConnection
 
         #endregion DrawPictureMembers
 
-        #region TimersTick
-        private void TimerTick(object o)
-        {
-            timeTick++;
-            if (timeTick > 100)
-            {
-                timeTick = 0;
-            }
-        }
-        #endregion TimersTick
-
         #region KalmanFilterDefine
 
         // 一维滤波器信息结构体
@@ -91,13 +93,21 @@ namespace SerialPortConnection
 
         #endregion KalmanFilterDefine
 
-        public SerialPortTool()
+        //program.
+        #region TimersTickProgram
+        private void TimerTick(object o)
         {
-            InitializeComponent();
-            InitializeParameter();
-            InitializeDraw();
+            timeTick++;
+            if (timeTick > 100)
+            {
+                timeTick = 0;
+            }
         }
+        #endregion TimersTickProgram
 
+        #region SerialPortProgram
+
+        //configurations.
         private void SerialPortForm_Load(object sender, EventArgs e)
         {
             INIFILE.Profile.LoadProfile();// load file.
@@ -127,7 +137,7 @@ namespace SerialPortConnection
             cbSerial.SelectedIndex = 0; //if no port, it will wrong.
             //comPort.BaudRate = 9600;
 
-            Control.CheckForIllegalCrossThreadCalls = false;    
+            Control.CheckForIllegalCrossThreadCalls = false;
             //这个类中我们不检查跨线程的调用是否合法(因为.net 2.0以后加强了安全机制，
             //不允许在winform中直接跨线程访问控件的属性)
             comPort.DataReceived += new SerialDataReceivedEventHandler(commPort_DataReceived);
@@ -145,9 +155,6 @@ namespace SerialPortConnection
 
             comPort.Close();
         }
-
-        #region SerialPortProgram
-
         private void ReadBaudRateConfig(string strBaudRate)
         {
             switch ( strBaudRate )
@@ -238,6 +245,160 @@ namespace SerialPortConnection
             }
         }
 
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string strBaudRate = cbBaudRate.Text;
+            string strDateBits = cbDataBits.Text;
+            string strStopBits = cbStop.Text;
+            Int32 iBaudRate = Convert.ToInt32(strBaudRate);
+            Int32 iDateBits = Convert.ToInt32(strDateBits);
+
+            Profile.G_BAUDRATE = iBaudRate + "";
+            Profile.G_DATABITS = iDateBits + "";
+            switch (cbStop.Text)
+            {
+                case "1":
+                    Profile.G_STOP = "1";
+                    break;
+                case "1.5":
+                    Profile.G_STOP = "1.5";
+                    break;
+                case "2":
+                    Profile.G_STOP = "2";
+                    break;
+                default:
+                    MessageBox.Show("Error stop bit save.", "Error");
+                    break;
+            }
+            switch (cbParity.Text)
+            {
+                case "NONE":
+                    Profile.G_PARITY = "NONE";
+                    break;
+                case "ODD":
+                    Profile.G_PARITY = "ODD";
+                    break;
+                case "EVEN":
+                    Profile.G_PARITY = "EVEN";
+                    break;
+                default:
+                    MessageBox.Show("Error parity bit save.", "Error!");
+                    break;
+            }
+
+            //保存设置
+            // public static string G_BAUDRATE = "1200";//给ini文件赋新值，并且影响界面下拉框的显示
+            //public static string G_DATABITS = "8";
+            //public static string G_STOP = "1";
+            //public static string G_PARITY = "NONE";
+            Profile.SaveProfile();
+        }
+
+        //receive.
+        private void btnOpenCloseCommPort_Click(object sender, EventArgs e)
+        {
+            serialSampleIndex = 0;
+            //serialPort1.IsOpen
+            if (!comPort.IsOpen)
+            {
+                try
+                {
+                    //set port number.
+                    string serialName = cbSerial.SelectedItem.ToString();
+                    comPort.PortName = serialName;
+
+                    //port settings:
+                    string strBaudRate = cbBaudRate.Text;
+                    string strDateBits = cbDataBits.Text;
+                    string strStopBits = cbStop.Text;
+                    Int32 iBaudRate = Convert.ToInt32(strBaudRate);
+                    Int32 iDateBits = Convert.ToInt32(strDateBits);
+
+                    comPort.BaudRate = iBaudRate;
+                    comPort.DataBits = iDateBits;
+                    switch (cbStop.Text)
+                    {
+                        case "1":
+                            comPort.StopBits = StopBits.One;
+                            break;
+                        case "1.5":
+                            comPort.StopBits = StopBits.OnePointFive;
+                            break;
+                        case "2":
+                            comPort.StopBits = StopBits.Two;
+                            break;
+                        default:
+                            MessageBox.Show("Error StopBits.", "Error");
+                            break;
+                    }
+                    switch (cbParity.Text)
+                    {
+                        case "NONE":
+                            comPort.Parity = Parity.None;
+                            break;
+                        case "ODD":
+                            comPort.Parity = Parity.Odd;
+                            break;
+                        case "EVEN":
+                            comPort.Parity = Parity.Even;
+                            break;
+                        default:
+                            MessageBox.Show("Error Parity!", "Error");
+                            break;
+                    }
+
+                    if (comPort.IsOpen == true)//如果打开状态，则先关闭一下
+                    {
+                        comPort.Close();
+                    }
+                    //状态栏设置
+                    tsSpNum.Text = "Port:" + comPort.PortName + "|";
+                    tsBaudRate.Text = "Baud:" + comPort.BaudRate + "|";
+                    tsDataBits.Text = "DataBit:" + comPort.DataBits + "|";
+                    tsStopBits.Text = "StopBit:" + comPort.StopBits + "|";
+                    tsParity.Text = "ChckBit:" + comPort.Parity + "|";
+
+                    //设置必要控件不可用
+                    cbSerial.Enabled = false;
+                    cbBaudRate.Enabled = false;
+                    cbDataBits.Enabled = false;
+                    cbStop.Enabled = false;
+                    cbParity.Enabled = false;
+
+                    comPort.Open();     //打开串口
+                    btnSwitch.Text = "Close";
+                    //timSend.Enabled = true;
+                    int iMsecond = int.Parse(txtSecond.Text);
+                    thTimSample = new System.Threading.Timer(TimerTick, null, 20, iMsecond);
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show("Error:" + ex.Message, "Error");
+                    timSend.Enabled = false;
+                    return;
+                }
+            }
+            else
+            {
+                //状态栏设置
+                tsSpNum.Text = "Port: Not Def|";
+                tsBaudRate.Text = "Baud: Not Def|";
+                tsDataBits.Text = "DataBit: Not Def|";
+                tsStopBits.Text = "StopBit: Not Def|";
+                tsParity.Text = "ChckBit: Not Def|";
+                //恢复控件功能
+                cbSerial.Enabled = true;
+                cbBaudRate.Enabled = true;
+                cbDataBits.Enabled = true;
+                cbStop.Enabled = true;
+                cbParity.Enabled = true;
+
+                comPort.Close();                 //关闭串口
+                btnSwitch.Text = "Open";
+                timSend.Enabled = false;         //关闭计时器
+            }
+        }
+
         void commPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             if (timeTickPre != timeTick)
@@ -319,6 +480,7 @@ namespace SerialPortConnection
             }
         }
 
+        //sending.
         private void btnSend_Click(object sender, EventArgs e)
         {
             if (cbTimeSend.Checked)
@@ -349,21 +511,21 @@ namespace SerialPortConnection
                 string[] strArray = strSendNoComma2.Split(' ');
 
                 int byteBufferLength = strArray.Length;
-                for (int i = 0; i < strArray.Length; i++ )
+                for (int i = 0; i < strArray.Length; i++)
                 {
-                    if (strArray[i]=="")
+                    if (strArray[i] == "")
                     {
                         byteBufferLength--;
                     }
-                }               
+                }
                 // int temp = 0;
                 byte[] byteBuffer = new byte[byteBufferLength];
                 int ii = 0;
                 for (int i = 0; i < strArray.Length; i++)        //对获取的字符做相加运算
                 {
-                  
+
                     Byte[] bytesOfStr = Encoding.Default.GetBytes(strArray[i]);
-                    
+
                     int decNum = 0;
                     if (strArray[i] == "")
                     {
@@ -372,21 +534,21 @@ namespace SerialPortConnection
                     }
                     else
                     {
-                         decNum = Convert.ToInt32(strArray[i], 16); //atrArray[i] == 12时，temp == 18 
+                        decNum = Convert.ToInt32(strArray[i], 16); //atrArray[i] == 12时，temp == 18 
                     }
-                           
-                   try    //防止输错，使其只能输入一个字节的字符
-                   {
-                       byteBuffer[ii] = Convert.ToByte(decNum);        
-                   }
-                   catch (System.Exception)
-                   {
-                       MessageBox.Show("Over Load!", "Error!");
-                       timSend.Enabled = false;
-                       return;
-                   }
 
-                   ii++;    
+                    try    //防止输错，使其只能输入一个字节的字符
+                    {
+                        byteBuffer[ii] = Convert.ToByte(decNum);
+                    }
+                    catch (System.Exception)
+                    {
+                        MessageBox.Show("Over Load!", "Error!");
+                        timSend.Enabled = false;
+                        return;
+                    }
+
+                    ii++;
                 }
                 comPort.Write(byteBuffer, 0, byteBuffer.Length);
             }
@@ -394,129 +556,6 @@ namespace SerialPortConnection
             {
                 comPort.WriteLine(txtSend.Text);    //写入数据
             }
-        }
-
-        private void btnOpenCloseCommPort_Click(object sender, EventArgs e)
-        {
-            serialSampleIndex = 0;
-            //serialPort1.IsOpen
-            if (!comPort.IsOpen)
-            {
-                try
-                {
-                    //set port number.
-                    string serialName = cbSerial.SelectedItem.ToString();
-                    comPort.PortName = serialName;
-
-                    //port settings:
-                    string strBaudRate = cbBaudRate.Text;
-                    string strDateBits = cbDataBits.Text;
-                    string strStopBits = cbStop.Text;
-                    Int32 iBaudRate = Convert.ToInt32(strBaudRate);
-                    Int32 iDateBits = Convert.ToInt32(strDateBits);
-
-                    comPort.BaudRate = iBaudRate;
-                    comPort.DataBits = iDateBits;
-                    switch (cbStop.Text)
-                    {
-                        case "1":
-                            comPort.StopBits = StopBits.One;
-                            break;
-                        case "1.5":
-                            comPort.StopBits = StopBits.OnePointFive;
-                            break;
-                        case "2":
-                            comPort.StopBits = StopBits.Two;
-                            break;
-                        default:
-                            MessageBox.Show("Error StopBits.", "Error");
-                            break;
-                    }
-                    switch (cbParity.Text)
-                    {
-                        case "NONE":
-                            comPort.Parity = Parity.None;
-                            break;
-                        case "ODD":
-                            comPort.Parity = Parity.Odd;
-                            break;
-                        case "EVEN":
-                            comPort.Parity = Parity.Even;
-                            break;
-                        default:
-                            MessageBox.Show("Error Parity!", "Error");
-                            break;
-                    }
-
-                    if (comPort.IsOpen == true)//如果打开状态，则先关闭一下
-                    {
-                        comPort.Close();
-                    }
-                    //状态栏设置
-                    tsSpNum.Text    = "Port:"    + comPort.PortName + "|";
-                    tsBaudRate.Text = "Baud:"    + comPort.BaudRate + "|";
-                    tsDataBits.Text = "DataBit:" + comPort.DataBits + "|";
-                    tsStopBits.Text = "StopBit:" + comPort.StopBits + "|";
-                    tsParity.Text   = "ChckBit:" + comPort.Parity   + "|";
-
-                    //设置必要控件不可用
-                    cbSerial.Enabled = false;
-                    cbBaudRate.Enabled = false;
-                    cbDataBits.Enabled = false;
-                    cbStop.Enabled = false;
-                    cbParity.Enabled = false;
-
-                    comPort.Open();     //打开串口
-                    btnSwitch.Text = "Close";
-                    //timSend.Enabled = true;
-                    int iMsecond = int.Parse(txtSecond.Text);
-                    thTimSample = new System.Threading.Timer(TimerTick, null, 20, iMsecond);
-                }
-                catch (System.Exception ex)
-                {
-                    MessageBox.Show("Error:" + ex.Message, "Error");
-                    timSend.Enabled = false;
-                    return;
-                }
-            }
-            else
-            {
-                //状态栏设置
-                tsSpNum.Text    = "Port: Not Def|";
-                tsBaudRate.Text = "Baud: Not Def|";
-                tsDataBits.Text = "DataBit: Not Def|";
-                tsStopBits.Text = "StopBit: Not Def|";
-                tsParity.Text   = "ChckBit: Not Def|";
-                //恢复控件功能
-                cbSerial.Enabled   = true;
-                cbBaudRate.Enabled = true;
-                cbDataBits.Enabled = true;
-                cbStop.Enabled     = true;
-                cbParity.Enabled   = true;
-
-                comPort.Close();                 //关闭串口
-                btnSwitch.Text = "Open";
-                timSend.Enabled = false;         //关闭计时器
-            }
-        }
-
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            txtReceive.Text = "";       //清空文本
-            ClearCalculatedData();
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        //关闭时事件
-        private void SerialPort_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            INIFILE.Profile.SaveProfile();
-            comPort.Close();
-            //thTimSample.Dispose();
         }
 
         private void txtSend_KeyPress(object sender, KeyPressEventArgs e)
@@ -548,56 +587,7 @@ namespace SerialPortConnection
 
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            string strBaudRate = cbBaudRate.Text;
-            string strDateBits = cbDataBits.Text;
-            string strStopBits = cbStop.Text;
-            Int32 iBaudRate = Convert.ToInt32(strBaudRate);
-            Int32 iDateBits = Convert.ToInt32(strDateBits);
-
-            Profile.G_BAUDRATE = iBaudRate+"";
-            Profile.G_DATABITS = iDateBits+"";
-            switch (cbStop.Text)
-            {
-                case "1":
-                    Profile.G_STOP = "1";
-                    break;
-                case "1.5":
-                    Profile.G_STOP = "1.5";
-                    break;
-                case "2":
-                    Profile.G_STOP ="2";
-                    break;
-                default:
-                    MessageBox.Show("Error stop bit save.", "Error");
-                    break;
-            }
-            switch (cbParity.Text)
-            {
-                case "NONE":
-                    Profile.G_PARITY = "NONE";
-                    break;
-                case "ODD":
-                    Profile.G_PARITY = "ODD";
-                    break;
-                case "EVEN":
-                    Profile.G_PARITY = "EVEN";
-                    break;
-                default:
-                    MessageBox.Show("Error parity bit save.", "Error!");
-                    break;
-            }
-
-            //保存设置
-            // public static string G_BAUDRATE = "1200";//给ini文件赋新值，并且影响界面下拉框的显示
-            //public static string G_DATABITS = "8";
-            //public static string G_STOP = "1";
-            //public static string G_PARITY = "NONE";
-            Profile.SaveProfile();
-        }
-
-        //timer: when checked, used for send period; not checked, used for sample interval.
+        //sample.
         private void tmSend_Tick(object sender, EventArgs e)
         {
             //转换时间间隔
@@ -703,6 +693,26 @@ namespace SerialPortConnection
             {
                 serialSampleIndex = 0;
             }
+        }
+        
+        //clear.
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtReceive.Text = "";       //清空文本
+            ClearCalculatedData();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        //closing.
+        private void SerialPort_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            INIFILE.Profile.SaveProfile();
+            comPort.Close();
+            //thTimSample.Dispose();
         }
 
         #endregion SerialPortProgram
@@ -888,6 +898,21 @@ namespace SerialPortConnection
         }
         #endregion //ClearData
 
+        private void btnDraw_Click(object sender, EventArgs e)
+        {
+            ClearCalculatedData();
+            TestKalmanFilter(DC_U, DC_V, DC_W);
+            DrawPictureDataLines(grp);
+        }
+
+        private void btnDrawPic_Click(object sender, EventArgs e)
+        {
+            InitializeDraw();
+            DrawPictureDataLines(grp);
+        }
+
+        #endregion DrawPictureProgram
+
         #region KalmanFilterAlgorithm
         private void Init_k(double Q, double R)
         {
@@ -913,14 +938,14 @@ namespace SerialPortConnection
         {
             Init_k(/*double Q*/ 3, /*double R*/ 4);
 
-            double zk = Y_LEN/2;
+            double zk = Y_LEN / 2;
             int range = X_LEN;
             for (int x = 0; x < range; x++)
             {
                 //if (x < (range / 2))
                 {
-                    kal.Q = 2*(rQ.NextDouble());
-                    kal.R = 2*(rR.NextDouble());
+                    kal.Q = 2 * (rQ.NextDouble());
+                    kal.R = 2 * (rR.NextDouble());
                 }
                 if (x % 2 == 0)
                 {
@@ -957,28 +982,13 @@ namespace SerialPortConnection
                 {
                     KalmanFilterUpdate(/*double zk*/ zk);
                 }
-                
+
                 kmX[x] = (kal.X);
-                kmP[x] = (kal.P)*10;
+                kmP[x] = (kal.P) * 10;
                 //kmK[x] = (kal.K)*100;
                 kmK[x] = (zk - 50);
             }
         }
         #endregion //KalmanFilterAlgorithm
-
-        private void btnDraw_Click(object sender, EventArgs e)
-        {
-            ClearCalculatedData();
-            TestKalmanFilter(DC_U, DC_V, DC_W);
-            DrawPictureDataLines(grp);
-        }
-
-        #endregion DrawPictureProgram
-
-        private void btnDrawPic_Click(object sender, EventArgs e)
-        {
-            InitializeDraw();
-            DrawPictureDataLines(grp);
-        }
     }
 }
