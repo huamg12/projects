@@ -15,7 +15,7 @@ namespace SerialPortConnection
 {
     public partial class SerialPortTool : Form
     {
-        //initialize.
+        //===//initialize.
         #region WindowFormInitialize
 
         public SerialPortTool()
@@ -27,7 +27,7 @@ namespace SerialPortConnection
 
         #endregion WindowFormInitialize
 
-        //defines.
+        //===//defines.
         #region TimersDefine
 
         System.Threading.Timer thTimSample;
@@ -64,6 +64,9 @@ namespace SerialPortConnection
         int Y_LEN = 0;
         double Ub = 0;
         double xtoa = 0;
+
+        double Ygain = 1.0;
+
         //double mr = 0;                            //modulation radio.
         //double pi = 0;
         //object
@@ -93,7 +96,7 @@ namespace SerialPortConnection
 
         #endregion KalmanFilterDefine
 
-        //program.
+        //===//program.
         #region TimersTickProgram
         private void TimerTick(object o)
         {
@@ -368,12 +371,12 @@ namespace SerialPortConnection
                     comPort.Open();     //打开串口
                     btnSwitch.Text = "Close";
                     //timSend.Enabled = true;
-                    int iMsecond = int.Parse(txtSecond.Text);
-                    thTimSample = new System.Threading.Timer(TimerTick, null, 20, iMsecond);
+                    int iMsecond = int.Parse(tbxSamPeriod.Text);
+                    thTimSample = new System.Threading.Timer(TimerTick, null, 0, iMsecond);
                 }
                 catch (System.Exception ex)
                 {
-                    MessageBox.Show("Error:" + ex.Message, "Error");
+                    MessageBox.Show("Error:" + ex.Message, "Error"); //import!!! if timeSlice "", report error.
                     timSend.Enabled = false;
                     return;
                 }
@@ -381,11 +384,11 @@ namespace SerialPortConnection
             else
             {
                 //状态栏设置
-                tsSpNum.Text = "Port: Not Def|";
+                tsSpNum.Text    = "Port: Not Def|";
                 tsBaudRate.Text = "Baud: Not Def|";
                 tsDataBits.Text = "DataBit: Not Def|";
                 tsStopBits.Text = "StopBit: Not Def|";
-                tsParity.Text = "ChckBit: Not Def|";
+                tsParity.Text   = "ChckBit: Not Def|";
                 //恢复控件功能
                 cbSerial.Enabled = true;
                 cbBaudRate.Enabled = true;
@@ -403,7 +406,7 @@ namespace SerialPortConnection
         {
             if (timeTickPre != timeTick)
             {
-                if (timeTick == 10)
+                if ((timeTick % 10) == 1)
                 {
                     btnDrawPic.PerformClick();
                 }
@@ -413,9 +416,9 @@ namespace SerialPortConnection
             {
                 return;
             }
-            if (comPort.IsOpen)
+            if (comPort.IsOpen) //wrongly look at comments, not code self!
             {
-                //time. //look at comments, not code self!
+                //time.
                 //DateTime dt = DateTime.Now;
                 //txtReceive.Text += dt.GetDateTimeFormats('f')[0].ToString() + "\r\n";
                 txtReceive.SelectAll();
@@ -686,7 +689,7 @@ namespace SerialPortConnection
             }
             if (serialSampleIndex < X_LEN)
             {
-                DC_U[serialSampleIndex] = Convert.ToDouble(serialDataLineText) + Y_LEN / 2;
+                DC_U[serialSampleIndex] = Convert.ToDouble(serialDataLineText) / Ygain + Y_LEN / 2;
                 serialSampleIndex++;
             }
             if (serialSampleIndex >= X_LEN - 1)
@@ -796,7 +799,7 @@ namespace SerialPortConnection
 
         private void DrawGrayFromStartToTargetPoints(int px1, int py1, int px2, int py2, int width)
         {
-            grp.DrawLine(new Pen(Color.Gray, width), new Point(px1, py1), new Point(px2, py2));
+            grp.DrawLine(new Pen(Color.Gray, width), new PointF(px1, py1), new PointF(px2, py2));
         }
 
         private void DrawPictureFrameLines(Graphics grp)
@@ -909,6 +912,39 @@ namespace SerialPortConnection
         {
             InitializeDraw();
             DrawPictureDataLines(grp);
+        }
+
+        private void tbxYgain_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbxYgain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if ((tbxYgain.Text != null) && (tbxYgain.Text != ""))   //not "" space.
+                {
+                    Ygain = Convert.ToDouble(tbxYgain.Text);
+                }
+                else
+                {
+                    Ygain = 1.0;
+                    MessageBox.Show("Value Gain Set Error! Now is 1.0", "Error!");
+                }
+
+                if (Ygain > 0)
+                {
+                    ClearCalculatedData();
+                    //DrawPictureDataLines(grp);
+                    MessageBox.Show("Value = Gain * Y_axis.", "Help");
+                }
+                else
+                {
+                    Ygain = 1.0;
+                    MessageBox.Show("Value Gain Set Error! Now is 1.0", "Error!");
+                }
+            }
         }
 
         #endregion DrawPictureProgram

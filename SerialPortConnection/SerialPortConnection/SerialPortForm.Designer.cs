@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.tbxSamPeriod = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.tbxSampUnit = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbxSample = new System.Windows.Forms.TextBox();
@@ -73,6 +75,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tabDraw = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbxYgain = new System.Windows.Forms.TextBox();
             this.btnDrawPic = new System.Windows.Forms.Button();
             this.btnDraw = new System.Windows.Forms.Button();
             this.picBoxDraw = new System.Windows.Forms.PictureBox();
@@ -121,6 +125,8 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.tbxSamPeriod);
+            this.groupBox5.Controls.Add(this.label3);
             this.groupBox5.Controls.Add(this.tbxSampUnit);
             this.groupBox5.Controls.Add(this.label4);
             this.groupBox5.Controls.Add(this.tbxSample);
@@ -130,6 +136,26 @@
             this.groupBox5.TabIndex = 33;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "sample";
+            // 
+            // tbxSamPeriod
+            // 
+            this.tbxSamPeriod.Location = new System.Drawing.Point(106, 57);
+            this.tbxSamPeriod.Margin = new System.Windows.Forms.Padding(4);
+            this.tbxSamPeriod.Name = "tbxSamPeriod";
+            this.tbxSamPeriod.Size = new System.Drawing.Size(57, 22);
+            this.tbxSamPeriod.TabIndex = 23;
+            this.tbxSamPeriod.Text = "100";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(5, 60);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(96, 17);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Period(ms):";
             // 
             // tbxSampUnit
             // 
@@ -216,7 +242,7 @@
             // btnExit
             // 
             this.btnExit.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExit.Location = new System.Drawing.Point(16, 461);
+            this.btnExit.Location = new System.Drawing.Point(12, 520);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(79, 38);
@@ -254,7 +280,7 @@
             // btnClear
             // 
             this.btnClear.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.Location = new System.Drawing.Point(103, 461);
+            this.btnClear.Location = new System.Drawing.Point(103, 520);
             this.btnClear.Margin = new System.Windows.Forms.Padding(4);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(79, 38);
@@ -438,23 +464,23 @@
             // 
             // txtSecond
             // 
-            this.txtSecond.Location = new System.Drawing.Point(180, 21);
+            this.txtSecond.Location = new System.Drawing.Point(138, 19);
             this.txtSecond.Margin = new System.Windows.Forms.Padding(4);
             this.txtSecond.Name = "txtSecond";
             this.txtSecond.Size = new System.Drawing.Size(57, 22);
             this.txtSecond.TabIndex = 18;
-            this.txtSecond.Text = "1000";
+            this.txtSecond.Text = "100";
             this.txtSecond.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSecond_KeyPress);
             // 
             // cbTimeSend
             // 
             this.cbTimeSend.AutoSize = true;
-            this.cbTimeSend.Location = new System.Drawing.Point(8, 22);
+            this.cbTimeSend.Location = new System.Drawing.Point(8, 20);
             this.cbTimeSend.Margin = new System.Windows.Forms.Padding(4);
             this.cbTimeSend.Name = "cbTimeSend";
-            this.cbTimeSend.Size = new System.Drawing.Size(167, 21);
+            this.cbTimeSend.Size = new System.Drawing.Size(124, 21);
             this.cbTimeSend.TabIndex = 16;
-            this.cbTimeSend.Text = "Smp | Snd Period(ms)";
+            this.cbTimeSend.Text = "AutoSend(ms):";
             this.cbTimeSend.UseVisualStyleBackColor = true;
             // 
             // groupBox2
@@ -476,7 +502,7 @@
             this.txtReceive.Margin = new System.Windows.Forms.Padding(4);
             this.txtReceive.Name = "txtReceive";
             this.txtReceive.ReadOnly = true;
-            this.txtReceive.Size = new System.Drawing.Size(710, 283);
+            this.txtReceive.Size = new System.Drawing.Size(710, 280);
             this.txtReceive.TabIndex = 0;
             this.txtReceive.Text = "";
             // 
@@ -558,7 +584,7 @@
             this.groupBox3.Controls.Add(this.txtSend);
             this.groupBox3.Location = new System.Drawing.Point(7, 327);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(726, 154);
+            this.groupBox3.Size = new System.Drawing.Size(726, 173);
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "DataSend";
@@ -576,6 +602,8 @@
             // 
             // tabDraw
             // 
+            this.tabDraw.Controls.Add(this.label2);
+            this.tabDraw.Controls.Add(this.tbxYgain);
             this.tabDraw.Controls.Add(this.btnDrawPic);
             this.tabDraw.Controls.Add(this.btnDraw);
             this.tabDraw.Controls.Add(this.picBoxDraw);
@@ -587,9 +615,28 @@
             this.tabDraw.Text = "Draw";
             this.tabDraw.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(23, 416);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Y Gain:";
+            // 
+            // tbxYgain
+            // 
+            this.tbxYgain.Location = new System.Drawing.Point(83, 413);
+            this.tbxYgain.Name = "tbxYgain";
+            this.tbxYgain.Size = new System.Drawing.Size(54, 22);
+            this.tbxYgain.TabIndex = 3;
+            this.tbxYgain.Text = "1.0";
+            this.tbxYgain.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxYgain_KeyDown);
+            this.tbxYgain.Enter += new System.EventHandler(this.tbxYgain_Enter);
+            // 
             // btnDrawPic
             // 
-            this.btnDrawPic.Location = new System.Drawing.Point(567, 445);
+            this.btnDrawPic.Location = new System.Drawing.Point(643, 467);
             this.btnDrawPic.Name = "btnDrawPic";
             this.btnDrawPic.Size = new System.Drawing.Size(85, 33);
             this.btnDrawPic.TabIndex = 2;
@@ -599,7 +646,7 @@
             // 
             // btnDraw
             // 
-            this.btnDraw.Location = new System.Drawing.Point(658, 444);
+            this.btnDraw.Location = new System.Drawing.Point(643, 419);
             this.btnDraw.Name = "btnDraw";
             this.btnDraw.Size = new System.Drawing.Size(85, 33);
             this.btnDraw.TabIndex = 1;
@@ -609,9 +656,9 @@
             // 
             // picBoxDraw
             // 
-            this.picBoxDraw.Location = new System.Drawing.Point(3, 3);
+            this.picBoxDraw.Location = new System.Drawing.Point(16, 4);
             this.picBoxDraw.Name = "picBoxDraw";
-            this.picBoxDraw.Size = new System.Drawing.Size(742, 434);
+            this.picBoxDraw.Size = new System.Drawing.Size(720, 400);
             this.picBoxDraw.TabIndex = 0;
             this.picBoxDraw.TabStop = false;
             // 
@@ -648,6 +695,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tabDraw.ResumeLayout(false);
+            this.tabDraw.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxDraw)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -704,6 +752,10 @@
         private System.Windows.Forms.Button btnDraw;
         private System.Windows.Forms.TextBox tbxSampUnit;
         private System.Windows.Forms.Button btnDrawPic;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbxYgain;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tbxSamPeriod;
 
         
     }
