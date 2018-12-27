@@ -87,7 +87,7 @@ int myVal( CSecond* that, int s )
 }
 CSecond* _S( CSecond* that, int val )
 {
-    _P( &that->superCFirst, val );
+    _P( &that->fatherCFirst, val );
     that->Val = myVal;
     that->val = val;
     return that;

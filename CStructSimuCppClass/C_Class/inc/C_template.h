@@ -25,13 +25,14 @@ typedef C_class Second      CSecond;
 
 #define MemberOf_CFirst(T, Type)    CFirst_Template(T, Type)
 
+#define FATHER(BaseClass)       father##BaseClass
 
-#define __SUPER(Base, Type, ...)                    \
-    union {                                         \
-        Base super##Base;                                 \
-        struct {                                    \
-            MemberOf_##Base(Type, __VA_ARGS__)      \
-        };                                          \
+#define __INHERIT(BaseClass, Type, ...)                     \
+    union {                                                 \
+        BaseClass father##BaseClass;                        \
+        struct {                                            \
+            MemberOf_##BaseClass(Type, __VA_ARGS__)         \
+        };                                                  \
     }
 
 C_class First
@@ -42,7 +43,7 @@ C_class First
 
 C_class Second
 {
-    __SUPER(CFirst,CSecond,int);
+    __INHERIT(CFirst, CSecond, int);
     int val;
 };
 
