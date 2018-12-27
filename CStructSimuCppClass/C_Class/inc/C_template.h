@@ -15,35 +15,45 @@
 
 #include "C_class.h"
 
-typedef C_class First       CFirst;
-typedef C_class Second      CSecond;
+// template. NOT USED.
+/***
+#define Template(T1, T2, Type1, Type2)              \
+    Type1 data1;                                    \
+    Type2 data2;                                    \
+    int (*func_1)(T1* p1, int p2);                  \
+    int (*func_2)(T2* p1, int p2);
+***/
 
+//01// FATHER class macro.
+#define FATHER(BaseClass)           father##BaseClass
 
-#define CFirst_Template(T, Type)                    \
-    Type data;                                      \
-    int (*Val)(T* that, int p);
-
-#define MemberOf_CFirst(T, Type)    CFirst_Template(T, Type)
-
-#define FATHER(BaseClass)       father##BaseClass
-
-#define __INHERIT(BaseClass, Type, ...)                     \
+//02// single INHERIT macro.
+#define __INHERIT(BaseClass, SelfClass)                     \
     union {                                                 \
         BaseClass father##BaseClass;                        \
         struct {                                            \
-            MemberOf_##BaseClass(Type, __VA_ARGS__)         \
+            MemberOf_##BaseClass(SelfClass)                 \
         };                                                  \
     }
 
+//03// First class Member macro.
+#define MemberOf_CFirst(SelfClass)                          \
+    int data;                                               \
+    int (*Val)(SelfClass* self, int p);
+
+//04// declare class.
+typedef C_class First       CFirst;
+typedef C_class Second      CSecond;
+
 C_class First
 {
-    MemberOf_CFirst(CFirst, int);
+    MemberOf_CFirst(CFirst);
     int val;
 };
 
 C_class Second
 {
-    __INHERIT(CFirst, CSecond, int);
+    __INHERIT(CFirst, CSecond);
     int val;
 };
 
