@@ -36,25 +36,32 @@
         };                                                  \
     }
 
-//03// First class Member macro.
-#define MemberOf_CFirst(SelfClass)                          \
+//03// Fahter class Member macro.
+#define MemberOf_CFirst(SelfClass)                         \
     int data;                                               \
-    int (*Val)(SelfClass* self, int p);
+    int (*Multi)(SelfClass* self, int p);
 
 //04// declare class.
 typedef C_class First       CFirst;
-typedef C_class Second      CSecond;
+typedef C_class Sun001      CSun001;
+//typedef C_class Sun002      CSun002;
 
-C_class First
+C_class Fahtee
 {
     MemberOf_CFirst(CFirst);
     int val;
 };
 
-C_class Second
+C_class Sun001
 {
-    __INHERIT(CFirst, CSecond);
+    __INHERIT(CFirst, CSun001);
     int val;
 };
+
+//C_class Sun002
+//{
+//    __INHERIT(CFirst, CSun002);
+//    int val;
+//};
 
 #endif //_C_TEMPLATE_H_.

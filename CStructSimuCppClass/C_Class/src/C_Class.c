@@ -26,56 +26,18 @@
 //#define __CALL(o, f, ...) o.f(&o, __VA_ARGS__)
 //__CALL(a, Val, 10);
 
-/* abstract understand. use A not CFather; use 'struct A' not Class Father.
+/* abstract understand. use A not CFirst; use 'struct A' not Class Father.
  * it's hard to understand  */
-//class A.
-//typedef struct A A;
-//struct A
-//{
-//    int data;
-//    int (*Val)( A* that, int a );
-//};
-//int Val( A* that, int a )
-//{
-//    printf("data a is %d\n", that->data + a);
-//    return that->data + a;
-//}
-//A * _A( A * that, int data )
-//{
-//    that->data = data;
-//    that->Val = Val;
-//    return that;
-//}
-//
-////class B
-//typedef struct B B;
-//struct B
-//{
-//    union
-//    {
-//        A super;
-//        struct
-//        {
-//            int data;
-////            int (*Val)( A* that, int a );
-//            int (*Val)( B* that, int a ); //implicit convert to B *. !!!
-//        };
-//    };
-//    int val;
-//};
-//B* _B( B* that, int val )
-//{
-//    _A(&that->super, val);
-//    that->val = val;
-//    return that;
-//}
-
 
 //class P, and S (parent, sun)
-CFirst* _P( CFirst* here, int data )
+int Value( CFirst* here, int p );
+int Sun001Calc( CSun002* here, int s );
+int Sun002Calc( CSun002* here, int s );
+
+CFirst* _CFirst( CFirst* here, int data )
 {
     here->data = data;
-    here->Val = Value;
+    here->Multi = Value;
     return here;
 }
 int Value( CFirst* here, int p )
@@ -84,44 +46,52 @@ int Value( CFirst* here, int p )
     return here->data * p;
 }
 // class CS.
-CSecond* _S( CSecond* here, int val )
+CSun001* _CSun001( CSun001* here, int val )
 {
-    _P( &here->FATHER(CFirst), val );
-    here->Val = myVal;
+    _CFirst( &here->FATHER(CFirst), val );
+    here->Multi = Sun001Calc;
     here->val = val;
     return here;
 }
-int myVal( CSecond* here, int s )
+int Sun001Calc( CSun001* here, int s )
 {
-    printf("s member data is %d\n", here->data * s);
+    printf("second member data is %d\n", here->data * s);
     return here->data * s;
 }
 
+// class CSun002
+//CSun002* _CSun002( CSun002* here, int val )
+//{
+//    _CFirst( &here->FATHER(CFirst), val );
+//    here->Multi = Sun002Calc;
+//    here->val = val;
+//    return here;
+//}
+//int Sun002Calc( CSun002* here, int s )
+//{
+//    printf("s002 member data is %d\n", here->data * s);
+//    return here->data * s;
+//}
+
 //====== main =====//
-int main(void) {
-
-
-//    A a;
-//    _A( &a, 20 );
-//    a.Val( &a, 10 );
-//
-//
-//    B b;
-//    _B( &b, 30 );
-//    b.Val( &a, 3); //not &b ???
-
+int main(void)
+{
     //===use macro template===//
     CFirst p;
-    _P(&p, 40);
+    _CFirst(&p, 10);
     p.val = 4;
-    p.Val(&p, 10);
+    p.Multi(&p, 2);
 
-    CSecond s;
-    _S(&s, 50);
+    CSun001 s;
+    _CSun001(&s, 30);
     s.val = 5;
-    s.Val(&s, 20);
+    s.Multi(&s, 3);
 
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+    //multi state.
+//    CFirst* active = NULL;
 
+
+
+//    puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
 	return EXIT_SUCCESS;
 }
