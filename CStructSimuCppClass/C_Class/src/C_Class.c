@@ -69,6 +69,7 @@ B* _B( B* that, int val )
 //class P, and S
 int Value( CP* that, int p )
 {
+    printf("p member data is %d\n", that->data * p);
     return that->data * p;
 }
 CP* _P( CP* that, int data )
@@ -80,6 +81,7 @@ CP* _P( CP* that, int data )
 // class CS.
 int myVal( CS* that, int s )
 {
+    printf("s member data is %d\n", that->data * s);
     return that->data * s;
 }
 CS* _S( CS* that, int val )
@@ -103,7 +105,15 @@ int main(void) {
     b.Val( &a, 3); //not &b ???
 
     //===use macro template===//
+    CP p;
+    _P(&p, 40);
+    p.val = 4;
+    p.Val(&p, 10);
 
+    CS s;
+    _S(&s, 50);
+    s.val = 5;
+    s.Val(&s, 20);
 
 	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
 

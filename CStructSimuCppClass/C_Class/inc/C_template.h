@@ -10,29 +10,32 @@
  ============================================================================
  */
 
-typedef struct P CP;
 
-#define P_Template              \
-    int data;                   \
-    int (*Val)(CP* that, int p);
+#define P_Template(T, Type)           \
+    Type data;                   \
+    int (*Val)(T* that, int p);
 
-#define Plate_CP    P_Template
+#define Plate_CP(T, Type)    P_Template(T, Type)
 
-typedef struct P
-{
-    Plate_CP
-    int val;
-} P;
 
-#define __SUPER(Base)           \
-    union {                     \
-        Base super;             \
-        struct {                \
-            Plate_##Base        \
-        };                      \
+#define __SUPER(Base, Type, ...)            \
+    union {                                 \
+        Base super;                         \
+        struct {                            \
+            Plate_##Base(Type, __VA_ARGS__) \
+        };                                  \
     }
 
-typedef struct S {
-    __SUPER(CP);
+
+typedef struct P CP;
+struct P
+{
+    Plate_CP(CP, int);
     int val;
-}CS;
+};
+
+typedef struct S CS;
+struct S {
+    __SUPER(CP,CS,int);
+    int val;
+};
