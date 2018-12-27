@@ -17,10 +17,11 @@
 #include "../inc/C_template.h"
 
 //! 01-use function pointer. int (*pfunc)(int, int);
-//! 02-constructor function.
+//! 02-constructor function, and this pointer.
 //! 03-inherit. no-name struct in union.
 //! 04-overwrite.
 //! 05-Template, macro (NO need to write again).
+//! 06-multi-level inherit. (macro can not nesting.)
 
 //#define __CALL(o, f, ...) o.f(&o, __VA_ARGS__)
 //__CALL(a, Val, 10);
@@ -67,26 +68,26 @@ B* _B( B* that, int val )
 }
 
 //class P, and S
-int Value( CP* that, int p )
+int Value( CFirst* that, int p )
 {
     printf("p member data is %d\n", that->data * p);
     return that->data * p;
 }
-CP* _P( CP* that, int data )
+CFirst* _P( CFirst* that, int data )
 {
     that->data = data;
     that->Val = Value;
     return that;
 }
 // class CS.
-int myVal( CS* that, int s )
+int myVal( CSecond* that, int s )
 {
     printf("s member data is %d\n", that->data * s);
     return that->data * s;
 }
-CS* _S( CS* that, int val )
+CSecond* _S( CSecond* that, int val )
 {
-    _P( &that->super, val );
+    _P( &that->superCFirst, val );
     that->Val = myVal;
     that->val = val;
     return that;
@@ -105,12 +106,12 @@ int main(void) {
     b.Val( &a, 3); //not &b ???
 
     //===use macro template===//
-    CP p;
+    CFirst p;
     _P(&p, 40);
     p.val = 4;
     p.Val(&p, 10);
 
-    CS s;
+    CSecond s;
     _S(&s, 50);
     s.val = 5;
     s.Val(&s, 20);

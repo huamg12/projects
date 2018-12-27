@@ -10,32 +10,40 @@
  ============================================================================
  */
 
+#ifndef _C_TEMPLATE_H_
+#define _C_TEMPLATE_H_
 
-#define P_Template(T, Type)           \
-    Type data;                   \
+#include "C_class.h"
+
+typedef C_class First       CFirst;
+typedef C_class Second      CSecond;
+
+
+#define CFirst_Template(T, Type)                    \
+    Type data;                                      \
     int (*Val)(T* that, int p);
 
-#define Plate_CP(T, Type)    P_Template(T, Type)
+#define MemberOf_CFirst(T, Type)    CFirst_Template(T, Type)
 
 
-#define __SUPER(Base, Type, ...)            \
-    union {                                 \
-        Base super;                         \
-        struct {                            \
-            Plate_##Base(Type, __VA_ARGS__) \
-        };                                  \
+#define __SUPER(Base, Type, ...)                    \
+    union {                                         \
+        Base super##Base;                                 \
+        struct {                                    \
+            MemberOf_##Base(Type, __VA_ARGS__)      \
+        };                                          \
     }
 
-
-typedef struct P CP;
-struct P
+C_class First
 {
-    Plate_CP(CP, int);
+    MemberOf_CFirst(CFirst, int);
     int val;
 };
 
-typedef struct S CS;
-struct S {
-    __SUPER(CP,CS,int);
+C_class Second
+{
+    __SUPER(CFirst,CSecond,int);
     int val;
 };
+
+#endif //_C_TEMPLATE_H_.
