@@ -31,7 +31,7 @@
 
 //class P, and S (parent, sun)
 int Value( CFirst* here, int p );
-int Sun001Calc( CSun002* here, int s );
+int Sun001Calc( CSun001* here, int s );
 int Sun002Calc( CSun002* here, int s );
 
 CFirst* _CFirst( CFirst* here, int data )
@@ -42,7 +42,7 @@ CFirst* _CFirst( CFirst* here, int data )
 }
 int Value( CFirst* here, int p )
 {
-    printf("p member data is %d\n", here->data * p);
+    printf("father member data is %d\n", here->data * p);
     return here->data * p;
 }
 // class CS.
@@ -55,23 +55,23 @@ CSun001* _CSun001( CSun001* here, int val )
 }
 int Sun001Calc( CSun001* here, int s )
 {
-    printf("second member data is %d\n", here->data * s);
+    printf("s01 member data is %d\n", here->data * s);
     return here->data * s;
 }
 
 // class CSun002
-//CSun002* _CSun002( CSun002* here, int val )
-//{
-//    _CFirst( &here->FATHER(CFirst), val );
-//    here->Multi = Sun002Calc;
-//    here->val = val;
-//    return here;
-//}
-//int Sun002Calc( CSun002* here, int s )
-//{
-//    printf("s002 member data is %d\n", here->data * s);
-//    return here->data * s;
-//}
+CSun002* _CSun002( CSun002* here, int val )
+{
+    _CFirst( &here->FATHER(CFirst), val );
+    here->Multi = Sun002Calc;
+    here->val = val;
+    return here;
+}
+int Sun002Calc( CSun002* here, int s )
+{
+    printf("s02 member data is %d\n", here->data * s);
+    return here->data * s;
+}
 
 //====== main =====//
 int main(void)
@@ -82,13 +82,28 @@ int main(void)
     p.val = 4;
     p.Multi(&p, 2);
 
-    CSun001 s;
-    _CSun001(&s, 30);
-    s.val = 5;
-    s.Multi(&s, 3);
+    CSun001 s01;
+    _CSun001(&s01, 30);
+    s01.val = 5;
+    s01.Multi(&s01, 3);
+
+    CSun002 s02;
+    _CSun002(&s02, 25);
+    s02.val = 5;
+    s02.Multi(&s02, 5);
 
     //multi state.
-//    CFirst* active = NULL;
+    puts("\nTest multiple state:\n");
+    CFirst* active = NULL;
+
+    active = &p;
+    active->Multi(active, 1);
+
+    active = (CFirst*)(&s01);
+    active->Multi(active, 1);
+
+    active = (CFirst*)(&s02);
+    active->Multi(active, 1);
 
 
 

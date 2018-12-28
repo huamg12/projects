@@ -44,9 +44,9 @@
 //04// declare class.
 typedef C_class First       CFirst;
 typedef C_class Sun001      CSun001;
-//typedef C_class Sun002      CSun002;
+typedef C_class Sun002      CSun002;
 
-C_class Fahtee
+C_class First
 {
     MemberOf_CFirst(CFirst);
     int val;
@@ -58,10 +58,10 @@ C_class Sun001
     int val;
 };
 
-//C_class Sun002
-//{
-//    __INHERIT(CFirst, CSun002);
-//    int val;
-//};
+C_class Sun002
+{
+    __INHERIT(CFirst, CSun002);
+    int val;
+};
 
 #endif //_C_TEMPLATE_H_.
