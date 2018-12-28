@@ -30,6 +30,7 @@
 int siFatherCalc( CFather* here, int p );
 int siSun001Calc( CSun001* here, int s );
 int siSun002Calc( CSun002* here, int s );
+int siBaby01Calc( CBaby01* here, int s );
 
 CFather* _CFather( CFather* here, int data )
 {
@@ -76,6 +77,23 @@ int siSun002Calc( CSun002* here, int s )
     return siTemp;
 }
 
+
+// class CBaby01
+CBaby01* _CBaby01( CBaby01* here, int val )
+{
+    _CSun001( &here->FATHER(CSun001), val );
+    here->Calc = siBaby01Calc;
+    here->val = val;
+    return here;
+}
+int siBaby01Calc( CBaby01* here, int s )
+{
+    int siTemp = here->data * s * s;    //sun002 to "Multiple" calculate.
+    printf("====member data: %d, input data: %d\n", here->data, s);
+    printf("b01 *s*s calculated result is %d\n", siTemp);
+    return siTemp;
+}
+
 //====== main =====//
 int main(void)
 {
@@ -95,6 +113,11 @@ int main(void)
     s02.val = 5;
     s02.Calc(&s02, 5);
 
+    CBaby01 b01;
+    _CBaby01(&b01, 15);
+    b01.val = 5;
+    b01.Calc(&b01, 5);
+
     //polymorphism
     puts("\nTest polymorphism:\n");
     CFather* active = NULL;
@@ -106,6 +129,9 @@ int main(void)
     active->Calc(active, 1);
 
     active = (CFather*)(&s02);
+    active->Calc(active, 1);
+
+    active = (CFather*)(&b01);
     active->Calc(active, 1);
 
 
