@@ -26,9 +26,6 @@
 //#define __CALL(o, f, ...) o.f(&o, __VA_ARGS__)
 //__CALL(a, Val, 10);
 
-/* abstract understand. use A not CFather; use 'struct A' not Class Father.
- * it's hard to understand  */
-
 //class P, and S (parent, sun)
 int siFatherCalc( CFather* here, int p );
 int siSun001Calc( CSun001* here, int s );
@@ -43,7 +40,7 @@ CFather* _CFather( CFather* here, int data )
 int siFatherCalc( CFather* here, int p )
 {
     int siTemp = here->data + p;    //father to "Add" calculate.
-    printf("    member data: %d, input data: %d\n", here->data, p);
+    printf("====member data: %d, input data: %d\n", here->data, p);
     printf("father + calculated result is %d\n", siTemp);
     return siTemp;
 }
@@ -58,7 +55,7 @@ CSun001* _CSun001( CSun001* here, int val )
 int siSun001Calc( CSun001* here, int s )
 {
     int siTemp = here->data - s;    //sun001 to "Sub" calculate.
-    printf("    member data: %d, input data: %d\n", here->data, s);
+    printf("====member data: %d, input data: %d\n", here->data, s);
     printf("s01 - calculated result is %d\n", siTemp);
     return siTemp;
 }
@@ -74,7 +71,7 @@ CSun002* _CSun002( CSun002* here, int val )
 int siSun002Calc( CSun002* here, int s )
 {
     int siTemp = here->data * s;    //sun002 to "Multiple" calculate.
-    printf("    member data: %d, input data: %d\n", here->data, s);
+    printf("====member data: %d, input data: %d\n", here->data, s);
     printf("s02 x calculated result is %d\n", siTemp);
     return siTemp;
 }

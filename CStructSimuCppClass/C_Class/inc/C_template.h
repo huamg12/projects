@@ -29,9 +29,11 @@
 
 //02// single INHERIT macro.
 #define __INHERIT(BaseClass, SelfClass)                     \
-    union {                                                 \
+    union                                                   \
+    {                                                       \
         BaseClass father##BaseClass;                        \
-        struct {                                            \
+        struct                                              \
+        {                                                   \
             MemberOf_##BaseClass(SelfClass)                 \
         };                                                  \
     }
@@ -43,10 +45,15 @@
     int data;                                               \
     int (*Calc)(SelfClass* self, int p);
 
+#define MemberOf_CSun001(SelfClass)                         \
+        MemberOf_CFather(SelfClass)                         \
+        int val;
+
 //04// declare class.
 typedef C_class Father      CFather;
 typedef C_class Sun001      CSun001;
 typedef C_class Sun002      CSun002;
+typedef C_class Baby01      CBaby01;
 
 C_class Father
 {
@@ -65,5 +72,12 @@ C_class Sun002
     __INHERIT(CFather, CSun002);
     int val;
 };
+
+C_class Baby01
+{
+    __INHERIT(CSun001, CBaby01);
+    int cry;
+};
+
 
 #endif //_C_TEMPLATE_H_.
