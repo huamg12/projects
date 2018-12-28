@@ -25,7 +25,7 @@
 ***/
 
 //01// FATHER class macro.
-#define FATHER(BaseClass)           father##BaseClass
+#define FATHER(BaseClass)           father##BaseClass       //For more than one level inherit.
 
 //02// single INHERIT macro.
 #define __INHERIT(BaseClass, SelfClass)                     \
@@ -36,31 +36,33 @@
         };                                                  \
     }
 
-//03// Fahter class Member macro.
-#define MemberOf_CFirst(SelfClass)                         \
+//03// Father class Member macro.
+//! The name after "MemberOf_" must be the name of basic class.
+//! Cause the macro will be expended in "__INHERIT".
+#define MemberOf_CFather(SelfClass)                         \
     int data;                                               \
-    int (*Multi)(SelfClass* self, int p);
+    int (*Calc)(SelfClass* self, int p);
 
 //04// declare class.
-typedef C_class First       CFirst;
+typedef C_class Father      CFather;
 typedef C_class Sun001      CSun001;
 typedef C_class Sun002      CSun002;
 
-C_class First
+C_class Father
 {
-    MemberOf_CFirst(CFirst);
+    MemberOf_CFather(CFather);
     int val;
 };
 
 C_class Sun001
 {
-    __INHERIT(CFirst, CSun001);
+    __INHERIT(CFather, CSun001);
     int val;
 };
 
 C_class Sun002
 {
-    __INHERIT(CFirst, CSun002);
+    __INHERIT(CFather, CSun002);
     int val;
 };
 

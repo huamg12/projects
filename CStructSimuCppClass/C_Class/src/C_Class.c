@@ -26,85 +26,90 @@
 //#define __CALL(o, f, ...) o.f(&o, __VA_ARGS__)
 //__CALL(a, Val, 10);
 
-/* abstract understand. use A not CFirst; use 'struct A' not Class Father.
+/* abstract understand. use A not CFather; use 'struct A' not Class Father.
  * it's hard to understand  */
 
 //class P, and S (parent, sun)
-int Value( CFirst* here, int p );
-int Sun001Calc( CSun001* here, int s );
-int Sun002Calc( CSun002* here, int s );
+int siFatherCalc( CFather* here, int p );
+int siSun001Calc( CSun001* here, int s );
+int siSun002Calc( CSun002* here, int s );
 
-CFirst* _CFirst( CFirst* here, int data )
+CFather* _CFather( CFather* here, int data )
 {
     here->data = data;
-    here->Multi = Value;
+    here->Calc = siFatherCalc;
     return here;
 }
-int Value( CFirst* here, int p )
+int siFatherCalc( CFather* here, int p )
 {
-    printf("father member data is %d\n", here->data * p);
-    return here->data * p;
+    int siTemp = here->data + p;    //father to "Add" calculate.
+    printf("    member data: %d, input data: %d\n", here->data, p);
+    printf("father + calculated result is %d\n", siTemp);
+    return siTemp;
 }
 // class CS.
 CSun001* _CSun001( CSun001* here, int val )
 {
-    _CFirst( &here->FATHER(CFirst), val );
-    here->Multi = Sun001Calc;
+    _CFather( &here->FATHER(CFather), val );
+    here->Calc = siSun001Calc;
     here->val = val;
     return here;
 }
-int Sun001Calc( CSun001* here, int s )
+int siSun001Calc( CSun001* here, int s )
 {
-    printf("s01 member data is %d\n", here->data * s);
-    return here->data * s;
+    int siTemp = here->data - s;    //sun001 to "Sub" calculate.
+    printf("    member data: %d, input data: %d\n", here->data, s);
+    printf("s01 - calculated result is %d\n", siTemp);
+    return siTemp;
 }
 
 // class CSun002
 CSun002* _CSun002( CSun002* here, int val )
 {
-    _CFirst( &here->FATHER(CFirst), val );
-    here->Multi = Sun002Calc;
+    _CFather( &here->FATHER(CFather), val );
+    here->Calc = siSun002Calc;
     here->val = val;
     return here;
 }
-int Sun002Calc( CSun002* here, int s )
+int siSun002Calc( CSun002* here, int s )
 {
-    printf("s02 member data is %d\n", here->data * s);
-    return here->data * s;
+    int siTemp = here->data * s;    //sun002 to "Multiple" calculate.
+    printf("    member data: %d, input data: %d\n", here->data, s);
+    printf("s02 x calculated result is %d\n", siTemp);
+    return siTemp;
 }
 
 //====== main =====//
 int main(void)
 {
     //===use macro template===//
-    CFirst p;
-    _CFirst(&p, 10);
+    CFather p;
+    _CFather(&p, 10);
     p.val = 4;
-    p.Multi(&p, 2);
+    p.Calc(&p, 2);
 
     CSun001 s01;
     _CSun001(&s01, 30);
     s01.val = 5;
-    s01.Multi(&s01, 3);
+    s01.Calc(&s01, 3);
 
     CSun002 s02;
     _CSun002(&s02, 25);
     s02.val = 5;
-    s02.Multi(&s02, 5);
+    s02.Calc(&s02, 5);
 
-    //multi state.
-    puts("\nTest multiple state:\n");
-    CFirst* active = NULL;
+    //polymorphism
+    puts("\nTest polymorphism:\n");
+    CFather* active = NULL;
 
     active = &p;
-    active->Multi(active, 1);
+    active->Calc(active, 1);
 
-    active = (CFirst*)(&s01);
-    active->Multi(active, 1);
+    active = (CFather*)(&s01);
+    active->Calc(active, 1);
 
-    active = (CFirst*)(&s02);
-    active->Multi(active, 1);
-
+    active = (CFather*)(&s02);
+    active->Calc(active, 1);
 
 
 //    puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
