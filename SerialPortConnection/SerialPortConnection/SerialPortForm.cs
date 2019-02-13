@@ -15,6 +15,8 @@ namespace SerialPortConnection
 {
     public partial class SerialPortTool : Form
     {
+        bool CONF_PRINT_ONE_DATA = true;
+
         //===//initialize.
         #region WindowFormInitialize
 
@@ -424,7 +426,16 @@ namespace SerialPortConnection
                 txtReceive.SelectAll();
                 txtReceive.SelectionColor = Color.Blue;             //font color.
 
-                byte[] byteRead = new byte[comPort.BytesToRead];    //BytesToRead bytes numbers.
+                try
+                {
+                    byte[] byteRead = new byte[comPort.BytesToRead];    //BytesToRead bytes numbers.
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show("Error:" + ex.Message, "Error"); //import!!! if timeSlice "", report error.
+                    timSend.Enabled = false;
+                    return;
+                }
                 if (rbRcvStr.Checked)
                 {
                     //txtReceive.Text += comPort.ReadLine() + "\r\n"; //注意：回车换行必须这样写，单独使用"\r"和"\n"都不会有效果
@@ -444,7 +455,10 @@ namespace SerialPortConnection
                         serialDataBuffText = newMsg; //restart.
                         serialDataBuffIndex = 0;
                     }
-                    vAlterLineToValue();
+                    if (CONF_PRINT_ONE_DATA == true)
+                    {
+                        vAlterLineToValue();
+                    }
                 }
                 else // HEX.
                 {
@@ -607,8 +621,11 @@ namespace SerialPortConnection
                     }
                     else //not checked, used for sample data.
                     {
-                        //vFindWordInString();
-                        //vAlterLineToValue();
+                        //if (CONF_PRINT_ONE_DATA != true)
+                        //{
+                        //    vFindWordInString();
+                        //    vAlterLineToValue();
+                        //}
                     }
                 }
             }
@@ -637,48 +654,41 @@ namespace SerialPortConnection
 
         private void timSample_Tick(object sender, EventArgs e)
         {
-            //string strSampTime = tbxSampTime.Text;
-            //try
-            //{
-            //    int mSecond = int.Parse(strSampTime) * 1000;//*1000ms.
-            //    timSample.Interval = mSecond;
-            //    if (timSample.Enabled == true)
-            //    {
-            //        //btnSend.PerformClick();
-            //        vFindWordInString();
-            //    }
-            //}
-            //catch (System.Exception)
-            //{
-            //    timSample.Enabled = false;
-            //    MessageBox.Show("Error sample time.", "Error!");
-            //}
         }
 
         private void vFindWordInString()
         {
-            int index = serialDataBuffText.IndexOf(tbxSample.Text);
-            int lenSam = tbxSample.Text.Length;
-            int idend = serialDataBuffText.IndexOf(tbxSampUnit.Text);
-            int lenUnt = tbxSampUnit.Text.Length;
-            string sampleValue = "0";
-            if ((idend > serialDataBuffDeep) && (idend > index))
+            if (CONF_PRINT_ONE_DATA != true)
             {
-                sampleValue = serialDataBuffText.Substring(index + lenSam + 1, idend - index - lenSam -2); //space.
-                if (serialSampleIndex == 0)
+                int index = serialDataBuffText.IndexOf(tbxSample.Text);
+                int lenSam = tbxSample.Text.Length;
+                int idend = serialDataBuffText.IndexOf(tbxSampUnit.Text);
+                int lenUnt = tbxSampUnit.Text.Length;
+
+                string sampleValue = "0";
+                if ((idend > serialDataBuffDeep) && (idend > index))
                 {
-                    ClearCalculatedData();
+                    //string patten = "(-{0,1})([0-9]{0,7})([mrad/s])"; //“\b”：退格键
+                    //Regex rgx = new Regex(patten);
+                    //Match mth = rgx.Match(serialDataBuffText);
+
+                    sampleValue = serialDataBuffText.Substring(index + lenSam + 1, idend - index - lenSam - 2); //space.
+
+                    if (serialSampleIndex == 0)
+                    {
+                        ClearCalculatedData();
+                    }
+                    if (serialSampleIndex < CIRCLE)
+                    {
+                        DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue) + Y_LEN / 2;
+                        serialSampleIndex++;
+                    }
+                    if (serialSampleIndex >= CIRCLE - 1)
+                    {
+                        serialSampleIndex = 0;
+                    }
                 }
-                if (serialSampleIndex < CIRCLE)
-                {
-                    DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue) + Y_LEN / 2;
-                    serialSampleIndex++;
-                }
-                if (serialSampleIndex >= CIRCLE - 1)
-                {
-                    serialSampleIndex = 0;
-                }
-            }
+            }//(CONF_PRINT_ONE_DATA != true)
         }
 
         private void vAlterLineToValue()
