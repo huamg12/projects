@@ -11,6 +11,9 @@ using INIFILE;
 using System.Text.RegularExpressions;
 using System.Threading;
 
+using Windows.System;
+using Windows.Devices.Bluetooth.Advertisement;
+
 namespace SerialPortConnection
 {
     public partial class SerialPortTool : Form
@@ -438,7 +441,6 @@ namespace SerialPortConnection
                 }
                 if (rbRcvStr.Checked)
                 {
-                    //txtReceive.Text += comPort.ReadLine() + "\r\n"; //注意：回车换行必须这样写，单独使用"\r"和"\n"都不会有效果
                     string newMsg = comPort.ReadLine() + "\r\n";
                     //string newMsg = comPort.ReadLine();
                     serialDataLineText = comPort.ReadLine();
@@ -654,41 +656,6 @@ namespace SerialPortConnection
 
         private void timSample_Tick(object sender, EventArgs e)
         {
-        }
-
-        private void vFindWordInString()
-        {
-            if (CONF_PRINT_ONE_DATA != true)
-            {
-                int index = serialDataBuffText.IndexOf(tbxSample.Text);
-                int lenSam = tbxSample.Text.Length;
-                int idend = serialDataBuffText.IndexOf(tbxSampUnit.Text);
-                int lenUnt = tbxSampUnit.Text.Length;
-
-                string sampleValue = "0";
-                if ((idend > serialDataBuffDeep) && (idend > index))
-                {
-                    //string patten = "(-{0,1})([0-9]{0,7})([mrad/s])"; //“\b”：退格键
-                    //Regex rgx = new Regex(patten);
-                    //Match mth = rgx.Match(serialDataBuffText);
-
-                    sampleValue = serialDataBuffText.Substring(index + lenSam + 1, idend - index - lenSam - 2); //space.
-
-                    if (serialSampleIndex == 0)
-                    {
-                        ClearCalculatedData();
-                    }
-                    if (serialSampleIndex < CIRCLE)
-                    {
-                        DC_U[serialSampleIndex] = Convert.ToDouble(sampleValue) + Y_LEN / 2;
-                        serialSampleIndex++;
-                    }
-                    if (serialSampleIndex >= CIRCLE - 1)
-                    {
-                        serialSampleIndex = 0;
-                    }
-                }
-            }//(CONF_PRINT_ONE_DATA != true)
         }
 
         private void vAlterLineToValue()
